@@ -1,4 +1,5 @@
 import { PATH } from '@constants/path';
+import { useAuth } from '@hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { LoginPageWrapper } from './LoginPage.style';
@@ -14,11 +15,12 @@ function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>();
+  const { login } = useAuth();
 
-  const onSubmit = handleSubmit(data => {
-    /** @todo Call api */
-    console.log(data);
+  const onSubmit = handleSubmit(async data => {
+    await login(data);
   });
+
   return (
     <LoginPageWrapper>
       <h1>로그인</h1>
