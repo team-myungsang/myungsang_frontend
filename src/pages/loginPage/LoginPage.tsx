@@ -2,7 +2,7 @@ import { PATH } from '@constants/path';
 import { useAuth } from '@hooks/useAuth';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { LoginPageWrapper } from './LoginPage.style';
+import { SLoginPageWrapper } from './LoginPage.style';
 
 interface LoginFormData {
   email: string;
@@ -22,7 +22,7 @@ function LoginPage() {
   });
 
   return (
-    <LoginPageWrapper>
+    <SLoginPageWrapper>
       <h1>로그인</h1>
 
       <form onSubmit={onSubmit}>
@@ -50,7 +50,7 @@ function LoginPage() {
           <Link to={PATH.SIGNUP}>회원가입</Link>
         </div>
       </form>
-    </LoginPageWrapper>
+    </SLoginPageWrapper>
   );
 }
 

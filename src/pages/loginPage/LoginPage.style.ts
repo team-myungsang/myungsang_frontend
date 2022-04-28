@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const LoginPageWrapper = styled.div`
+export const SLoginPageWrapper = styled.div`
   padding: 1rem;
   color: ${p => p.theme.color.black};
 
