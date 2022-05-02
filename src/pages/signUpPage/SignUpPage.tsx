@@ -1,12 +1,13 @@
 import SignUpForm from '@components/signUpForm/SignUpForm';
 import { useState, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   SSignUpModal,
   SSignUpModalOuter,
   SSignUpModalYesOrNo,
   SHeader,
-  SBackBtn,
 } from './SignUp.style';
 
 // modal type
@@ -45,6 +46,8 @@ function ModalWindow({ setModalState }: ModalProps) {
 
 // header
 function SignUpHeader() {
+  const [bgPer, setBgPer] = useState<number>(1);
+  const [bgPerTotal, setBgPerTotal] = useState<number>(3);
   const [modalState, setModalState] = useState(false);
   const handleBack = () => {
     setModalState(prev => !prev);
@@ -53,8 +56,14 @@ function SignUpHeader() {
     <>
       {modalState ? <ModalWindow setModalState={setModalState} /> : null}
       <SHeader>
-        <SBackBtn onClick={handleBack}>뒤로</SBackBtn>
-        <h2>회원가입</h2>
+        <FontAwesomeIcon
+          className="backBtn"
+          onClick={handleBack}
+          icon={faArrowLeft}
+        />
+        <div className="bar">
+          <div className="per" />
+        </div>
       </SHeader>
     </>
   );

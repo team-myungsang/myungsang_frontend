@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
 export const SHeader = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  background: #f0f0f0;
-`;
-
-export const SBackBtn = styled.div`
-  background: #c4c4c4;
-  position: absolute;
-  padding: 12px;
-  left: 12px;
-  top: 12px;
-  cursor: pointer;
+  > .backBtn {
+    padding: 18px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  > .bar {
+    height: 2px;
+    background: #dfdfdf;
+    > .per {
+      width: 30%;
+      height: 2px;
+      background: #ff613f;
+    }
+  }
 `;
 
 export const SSignUpModalOuter = styled.div`
