@@ -4,7 +4,7 @@ import LoginPage from '@pages/loginPage/LoginPage';
 import MainPage from '@pages/MainPage';
 import MyVideoPage from '@pages/MyVideoPage';
 import ProfilePage from '@pages/ProfilePage';
-import SignUpPage from '@pages/SignUpPage';
+import SignUpPage from '@pages/signUpPage/SignUpPage';
 import WatchPage from '@pages/WatchPage';
 import { Route, Routes } from 'react-router-dom';
 
