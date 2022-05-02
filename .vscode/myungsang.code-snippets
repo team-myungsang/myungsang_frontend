@@ -1,0 +1,28 @@
+{
+	"펑션 컴포넌트": {
+		"prefix": "fc",
+		"body": [
+			"function ${TM_FILENAME_BASE}() {",
+			"  return <div>${TM_FILENAME_BASE}</div>;",
+			"}",
+			"",
+			"export default ${TM_FILENAME_BASE};",
+			""
+		],
+		"description": "기본적인 펑션 컴포넌트"
+	},
+  "펑션 컴포넌트 with Props": {
+		"prefix": "fcpr",
+		"body": [
+			"interface ${TM_FILENAME_BASE}Props {}",
+			"",
+			"function ${TM_FILENAME_BASE}({}: ${TM_FILENAME_BASE}Props) {",
+			"  return <div>${TM_FILENAME_BASE}</div>;",
+			"}",
+			"",
+			"export default ${TM_FILENAME_BASE};",
+			""
+		],
+		"description": "Props가 필요한 펑션 컴포넌트"
+	},
+}
