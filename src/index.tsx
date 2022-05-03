@@ -7,10 +7,10 @@ import { theme } from '@styles/theme';
 import { AuthProvider } from '@hooks/useAuth';
 import GlobalStyle from '@styles/globalStyle';
 import InitProvider from '@components/initProvider/InitProvider';
+import { SERVER_URL } from '@constants/url';
 import App from './App';
 
-/** @todo edit to server url */
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = SERVER_URL;
 /** @description for refreshToken */
 axios.defaults.withCredentials = true;
 
