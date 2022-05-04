@@ -12,7 +12,7 @@ export const SSignUpForm = styled.form`
     position: relative;
     display: flex;
     flex-direction: column;
-    margin: 40px 0px;
+    margin-top: 40px;
 
     > input {
       font-size: 14px;
@@ -27,23 +27,13 @@ export const SSignUpForm = styled.form`
       }
     }
     > .resetBtn {
-      outline: none;
-      border: none;
-      border-radius: 100%;
-      color: white;
-      background: #c4c4c4;
       position: absolute;
       right: 0;
       margin: 10px;
     }
-    > .good {
-      color: blue;
-    }
-    > .bad {
-      color: red;
-    }
   }
   > .signUpBtn {
+    margin-top: 30px;
     font-weight: 500;
     color: white;
     display: block;
@@ -57,6 +47,29 @@ export const SSignUpForm = styled.form`
     font-size: 15px;
     &.active {
       background: #ff613f;
+    }
+  }
+`;
+
+export const SSignUpPasswordCheck = styled.div`
+  display: flex;
+  font-size: 14px;
+  color: #c8c8c8;
+  > div {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    &:first-child {
+      padding-right: 10px;
+    }
+    &.active {
+      color: #ff613f;
+      > svg > path {
+        fill: #ff613f;
+      }
+    }
+    > div {
+      padding-right: 5px;
     }
   }
 `;

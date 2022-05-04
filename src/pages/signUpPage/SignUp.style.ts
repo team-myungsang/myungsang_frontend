@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 
-export const SHeader = styled.div`
+export const SHeader = styled.div<{ step: number }>`
   > .backBtn {
-    padding: 18px;
+    margin: 18px;
     cursor: pointer;
-    font-size: 20px;
   }
   > .bar {
     height: 2px;
     background: #dfdfdf;
     > .per {
-      width: 30%;
+      width: ${props => (props.step / 3) * 100}%;
       height: 2px;
       background: #ff613f;
     }
@@ -59,29 +58,5 @@ export const SSignUpModalYesOrNo = styled.div`
     &.leftBtn {
       border-radius: 0 0 0 7px;
     }
-  }
-`;
-
-export const SLoginModalOuter = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  font-weight: 400;
-  z-index: 1;
-`;
-
-export const SLoginModal = styled.div`
-  position: fixed;
-  width: 330px;
-  height: 115px;
-  left: calc(50% - 331px / 2);
-  top: calc(50% - 115px / 2 - 0.5px);
-  background-color: white;
-  border-radius: 7px;
-  > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
   }
 `;

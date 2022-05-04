@@ -1,14 +1,13 @@
 import SignUpForm from '@components/signUpForm/SignUpForm';
 import { useState, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   SSignUpModal,
   SSignUpModalOuter,
   SSignUpModalYesOrNo,
   SHeader,
 } from './SignUp.style';
+import { ReactComponent as ArrowLeft } from '../../assets/ArrowLeft.svg';
 
 // modal type
 interface ModalProps {
@@ -44,10 +43,13 @@ function ModalWindow({ setModalState }: ModalProps) {
   );
 }
 
+// header props
+interface HeaderProps {
+  step: number;
+}
+
 // header
-function SignUpHeader() {
-  const [bgPer, setBgPer] = useState<number>(1);
-  const [bgPerTotal, setBgPerTotal] = useState<number>(3);
+function SignUpHeader({ step }: HeaderProps) {
   const [modalState, setModalState] = useState(false);
   const handleBack = () => {
     setModalState(prev => !prev);
@@ -55,12 +57,8 @@ function SignUpHeader() {
   return (
     <>
       {modalState ? <ModalWindow setModalState={setModalState} /> : null}
-      <SHeader>
-        <FontAwesomeIcon
-          className="backBtn"
-          onClick={handleBack}
-          icon={faArrowLeft}
-        />
+      <SHeader step={step}>
+        <ArrowLeft className="backBtn" onClick={handleBack} />
         <div className="bar">
           <div className="per" />
         </div>
@@ -70,10 +68,11 @@ function SignUpHeader() {
 }
 
 function SignUpPage() {
+  const [step, setStep] = useState(1);
   return (
     <div>
-      <SignUpHeader />
-      <SignUpForm />
+      <SignUpHeader step={step} />
+      <SignUpForm step={step} setStep={setStep} />
     </div>
   );
 }
