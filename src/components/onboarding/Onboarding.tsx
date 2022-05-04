@@ -1,4 +1,4 @@
-import onBoardingImg from '@assets/tmp_ob.gif';
+import onBoardingImg from '@assets/tmp_ob.png';
 import { SOnboarding } from './Onboarding.style';
 
 function Onboarding() {
