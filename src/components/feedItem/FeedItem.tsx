@@ -1,5 +1,7 @@
 import { Feed } from '@models/feed';
-import moreSvg from '@assets/more.svg';
+import { ReactComponent as More } from '@assets/more.svg';
+import { ReactComponent as Like } from '@assets/like.svg';
+import { ReactComponent as View } from '@assets/view.svg';
 import dayjs from 'dayjs';
 import { countFormatter } from '@utils/format';
 import { Link } from 'react-router-dom';
@@ -31,7 +33,7 @@ function FeedItem({ feed }: FeedItemProps) {
 
           {/* More Button */}
           <div className="moreBtn" onClick={onClickMoreBtn} aria-hidden>
-            <img src={moreSvg} alt="more" />
+            <More />
           </div>
         </div>
         <div className="feedThumb">
@@ -40,8 +42,14 @@ function FeedItem({ feed }: FeedItemProps) {
         <div className="feedFooter">
           <div className="feedTitle">{feed.title}</div>
           <div className="feedInfoWrapper">
-            <div className="feedInfoItem">{countFormatter(feed.like)}개</div>
-            <div className="feedInfoItem">{countFormatter(feed.view)}회</div>
+            <div className="feedInfoItem">
+              <Like />
+              {countFormatter(feed.like)}개
+            </div>
+            <div className="feedInfoItem">
+              <View />
+              {countFormatter(feed.view)}회
+            </div>
             <div className="feedInfoItem">
               {dayjs.unix(feed.createdAt).fromNow()}
             </div>

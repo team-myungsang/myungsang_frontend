@@ -32,8 +32,8 @@ export const SFeed = styled.div`
     .moreBtn {
       flex: 1;
       text-align: right;
-      img {
-        width: 2.5px;
+      svg {
+        width: 25px;
         height: auto;
       }
     }
@@ -61,6 +61,8 @@ export const SFeed = styled.div`
       align-items: center;
 
       .feedInfoItem {
+        display: flex;
+        align-items: center;
         font-weight: 500;
         font-size: 11px;
         line-height: 16px;
@@ -71,7 +73,15 @@ export const SFeed = styled.div`
           width: 2px;
           height: 2px;
           background-color: #c4c4c4;
-          margin: 0 4px 3px;
+          margin: 0 4px;
+        }
+        svg {
+          width: 14px;
+          height: 14px;
+          margin-right: 2px;
+        }
+        path {
+          fill: ${p => p.theme.color.gray01};
         }
       }
     }
