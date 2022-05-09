@@ -1,4 +1,5 @@
 import FeedItem from '@components/feedItem/FeedItem';
+import Footer from '@components/footer/Footer';
 import Header from '@components/header/Header';
 import { mockFeed } from '@mocks/feed';
 import { useEffect } from 'react';
@@ -21,6 +22,7 @@ function MainPage() {
       {Array.from(Array(10)).map((_, i) => (
         <FeedItem key="feed" feed={mockFeed} />
       ))}
+      <Footer />
     </SMainPageWrapper>
   );
 }
