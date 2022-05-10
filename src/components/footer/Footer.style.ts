@@ -1,3 +1,4 @@
+import { roundedButtonCss } from '@styles/roundedButton';
 import styled from 'styled-components';
 
 export const SFooter = styled.footer`
@@ -32,6 +33,14 @@ export const SFooter = styled.footer`
         fill: #fff;
       }
     }
+
+    &.selected {
+      color: ${p => p.theme.color.orange};
+
+      path {
+        fill: ${p => p.theme.color.orange};
+      }
+    }
   }
 
   .empty {
@@ -59,5 +68,29 @@ export const SAddVideoButton = styled.div`
     path {
       fill: #fff;
     }
+  }
+`;
+
+export const SLoginModalContent = styled.div`
+  .desc {
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: ${p => p.theme.color.black};
+    margin: 15px 0 34px;
+  }
+  .loginButton {
+    ${roundedButtonCss}
+    background-color: ${p => p.theme.color.black};
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .closeButton {
+    ${roundedButtonCss}
+    border: 1px solid #c8c8c8;
+    background-color: #fff;
+    color: ${p => p.theme.color.black};
   }
 `;
