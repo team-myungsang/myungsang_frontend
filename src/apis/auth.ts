@@ -6,45 +6,43 @@ import axios from 'axios';
 import { getUser } from './user';
 
 export interface LoginResponse {
-  user_id: number;
-  access_token: string;
-  refresh_token: string;
-  access_expires_in: number;
-  refresh_expires_in: number;
+  msg: string;
+  userId: number;
+  accessToken: string;
 }
 
 interface LogoutResponse {
   message: string;
 }
 
-function loginSuccess({
-  access_token: accessToken,
-  refresh_token: refreshToken,
-  refresh_expires_in: refreshExpiresIn,
-}: LoginResponse): void {
-  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+// function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
+//   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
-  setRefreshTokenCookie(refreshToken, refreshExpiresIn);
+//   setRefreshTokenCookie(refreshToken, refreshExpiresIn);
 
-  if (refreshExpiresIn - 60000 < 0) {
-    setTimeout(silentRefresh, 60000);
-    return;
-  }
+//   if (refreshExpiresIn - 60000 < 0) {
+//     setTimeout(silentRefresh, 60000);
+//     return;
+//   }
 
-  setTimeout(silentRefresh, refreshExpiresIn - 60000);
-}
+//   setTimeout(silentRefresh, refreshExpiresIn - 60000);
+// }
 
 export async function login(data: {
   email: string;
   password: string;
 }): Promise<User> {
   try {
-    // const res = await axios.post<LoginResponse>('/login', data);
-    // onLoginSuccess(res.data);
-    const mockData = await mockLogin();
-    loginSuccess(mockData);
-    const user = await getUser(mockData.user_id);
-    return user;
+    const res = await axios.post<LoginResponse>('/login', data, {
+      withCredentials: true,
+    });
+    console.log(res.headers['set-cookie']);
+    console.log(res.data);
+
+    // loginSuccess(res.data);
+    // const user = await getUser(mockData.user_id);
+    // return user;
+    throw Error('dtd');
   } catch (error) {
     /** @todo error handling */
     throw new Error('onLogin Error');
@@ -64,10 +62,11 @@ export async function silentRefresh(): Promise<User | undefined> {
   // onLoginSuccess(res.data);
   const mockData = await mockSilentRefresh();
 
-  loginSuccess(mockData);
-  const user = await getUser(mockData.user_id);
+  // loginSuccess(mockData);
+  // const user = await getUser(mockData.user_id);
 
-  return user;
+  // return user;
+  return undefined;
 }
 
 export async function logout() {
