@@ -9,7 +9,7 @@ export const SHeader = styled.div<{ step: number }>`
     height: 2px;
     background: #dfdfdf;
     > .per {
-      width: ${props => (props.step / 3) * 100}%;
+      width: ${props => (props.step / 4) * 100}%;
       height: 2px;
       background: #ff613f;
     }

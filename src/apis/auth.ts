@@ -17,6 +17,12 @@ interface LogoutResponse {
   message: string;
 }
 
+interface SignUpResponse {
+  email: string;
+  nickname: string;
+  password: string;
+}
+
 function loginSuccess({
   access_token: accessToken,
   refresh_token: refreshToken,
@@ -78,4 +84,21 @@ export async function logout() {
   });
 
   console.log(res.data.message);
+}
+
+export async function signUpSubmit({
+  email,
+  nickname,
+  password,
+}: SignUpResponse) {
+  const data = {
+    email,
+    name: nickname,
+    password,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/register', data, { headers });
+  return res.data.msg;
 }
