@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signUpSubmit } from '@apis/auth';
 import { SSignUpForm, SSignUpPasswordCheck } from './SignUpForm.style';
 import { ReactComponent as Reset } from '../../assets/Reset.svg';
 import { ReactComponent as Check } from '../../assets/Check.svg';
@@ -64,9 +65,16 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (false) {
-      // 백엔드에서 이메일, 닉네임 중복 유무 확인하는 코드 작성하는 부분
-    } else if (step === 3 && '닉네임 중복 통과') {
+    if (step === 3) {
+      const msg = await signUpSubmit({ email, password, nickname });
+      console.log(msg);
+      if (msg === 'Register succeed') {
+        window.alert('회원가입이 되었습니다.');
+      } else if (msg === 'Same name exists') {
+        window.alert('이미 존재하는 닉네임입니다.');
+      } else {
+        window.alert('이미 가입된 이메일입니다.');
+      }
       pageMove('/login');
     } else {
       setStep(prev => prev + 1);
@@ -76,7 +84,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
   return (
     <div>
       {step === 1 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm onSubmit={onSubmit}>
           <div className="title">
             <div>로그인에 사용할</div>
             <div>이메일을 입력해주세요.</div>
@@ -111,7 +119,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
         </SSignUpForm>
       )}
       {step === 2 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm onSubmit={onSubmit}>
           <div className="title">
             <div>로그인에 사용할</div>
             <div>비밀번호를 입력해주세요.</div>
@@ -182,7 +190,11 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
         </SSignUpForm>
       )}
       {step === 3 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm
+          action="http://myungsang-env.eba-zwjzzpcm.ap-northeast-2.elasticbeanstalk.com/register"
+          method="POST"
+          onSubmit={onSubmit}
+        >
           <div className="title">
             <div>로그인에 사용할</div>
             <div>닉네임을 입력해주세요.</div>
