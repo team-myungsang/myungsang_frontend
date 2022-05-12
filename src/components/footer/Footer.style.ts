@@ -50,7 +50,7 @@ export const SFooter = styled.footer`
   }
 `;
 
-export const SAddVideoButton = styled.div`
+export const SUploadFeedButton = styled.div`
   position: absolute;
   top: -8px;
   left: 50%;
