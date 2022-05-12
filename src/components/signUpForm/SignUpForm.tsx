@@ -8,10 +8,10 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUpSubmit } from '@apis/auth';
+import { ReactComponent as Reset } from '@assets/reset.svg';
+import { ReactComponent as Check } from '@assets/check.svg';
+import { ReactComponent as Success } from '@assets/success.svg';
 import { SSignUpForm, SSignUpPasswordCheck } from './SignUpForm.style';
-import { ReactComponent as Reset } from '../../assets/Reset.svg';
-import { ReactComponent as Check } from '../../assets/Check.svg';
-import { ReactComponent as Success } from '../../assets/Success.svg';
 
 interface SignUpFormProps {
   setStep: Dispatch<SetStateAction<number>>;
@@ -66,20 +66,24 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step === 3) {
-      const msg = await signUpSubmit({ email, password, nickname });
-      console.log(msg);
-      if (msg === 'Register succeed') {
-        setStep(prev => prev + 1);
-      } else if (msg === 'Same name exists') {
-        window.alert('이미 존재하는 닉네임입니다.');
-        pageMove('/login');
+    try {
+      if (step === 3) {
+        const msg = await signUpSubmit({ email, password, nickname });
+        if (msg === 'Register succeed') {
+          setStep(prev => prev + 1);
+        } else if (msg === 'Same name exists') {
+          window.alert('이미 존재하는 닉네임입니다.');
+          pageMove('/login');
+        } else {
+          window.alert('이미 가입된 이메일입니다.');
+          pageMove('/login');
+        }
       } else {
-        window.alert('이미 가입된 이메일입니다.');
-        pageMove('/login');
+        setStep(prev => prev + 1);
       }
-    } else {
-      setStep(prev => prev + 1);
+    } catch (error: any) {
+      window.alert(`Error: ${error.message}`);
+      pageMove('/login');
     }
   };
 
