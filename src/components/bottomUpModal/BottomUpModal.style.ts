@@ -1,3 +1,4 @@
+import { zIndexes } from '@styles/zIndexes';
 import styled, { css, keyframes } from 'styled-components';
 
 const openAnimation = keyframes`
@@ -28,6 +29,7 @@ export const SBottomUpModal = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: ${zIndexes.Modal};
 
   ${p =>
     p.visible

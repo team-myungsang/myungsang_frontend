@@ -4,10 +4,9 @@ import { Overlay, SBottomUpModal } from './BottomUpModal.style';
 interface BottomUpModalProps {
   content: ReactElement;
   visible: boolean;
-  onClose: () => void;
 }
 
-function BottomUpModal({ content, visible, onClose }: BottomUpModalProps) {
+function BottomUpModal({ content, visible }: BottomUpModalProps) {
   const [close, setClose] = useState<boolean>(true);
 
   useEffect(() => {
