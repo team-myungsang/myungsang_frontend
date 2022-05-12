@@ -45,6 +45,7 @@ function Footer() {
   function onClickFooterItem(to: string) {
     if (to !== PATH.MAIN && !user) {
       setLoginModalVisible(true);
+      return;
     }
     navigate(to);
   }
