@@ -6,7 +6,7 @@ export const PATH = {
   /** 회원가입 */
   SIGNUP: '/signup',
   /** 재생 */
-  WATCH: '/watch/:movieId',
+  WATCH: '/watch/',
   /** 관심 영상 */
   LIKE_LIST: '/likelist',
   /** 프로필 */
