@@ -19,26 +19,6 @@ interface SignUpResponse {
   email: string;
   nickname: string;
   password: string;
-<<<<<<< HEAD
-=======
-}
-
-function loginSuccess({
-  access_token: accessToken,
-  refresh_token: refreshToken,
-  refresh_expires_in: refreshExpiresIn,
-}: LoginResponse): void {
-  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-  setRefreshTokenCookie(refreshToken, refreshExpiresIn);
-
-  if (refreshExpiresIn - 60000 < 0) {
-    setTimeout(silentRefresh, 60000);
-    return;
-  }
-
-  setTimeout(silentRefresh, refreshExpiresIn - 60000);
->>>>>>> 0b6a8cd7dc9be8d5732ddf1d57130c05dfa141b8
 }
 
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
