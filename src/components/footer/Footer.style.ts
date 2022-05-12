@@ -1,4 +1,5 @@
 import { roundedButtonCss } from '@styles/roundedButton';
+import { zIndexes } from '@styles/zIndexes';
 import styled from 'styled-components';
 
 export const SFooter = styled.footer`
@@ -6,6 +7,7 @@ export const SFooter = styled.footer`
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: ${zIndexes.Footer};
 
   padding: 0 30px;
   display: flex;
