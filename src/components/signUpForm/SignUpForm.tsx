@@ -7,9 +7,11 @@ import {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signUpSubmit } from '@apis/auth';
 import { SSignUpForm, SSignUpPasswordCheck } from './SignUpForm.style';
 import { ReactComponent as Reset } from '../../assets/Reset.svg';
 import { ReactComponent as Check } from '../../assets/Check.svg';
+import { ReactComponent as Success } from '../../assets/Success.svg';
 
 interface SignUpFormProps {
   setStep: Dispatch<SetStateAction<number>>;
@@ -64,19 +66,31 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (false) {
-      // 백엔드에서 이메일, 닉네임 중복 유무 확인하는 코드 작성하는 부분
-    } else if (step === 3 && '닉네임 중복 통과') {
-      pageMove('/login');
+    if (step === 3) {
+      const msg = await signUpSubmit({ email, password, nickname });
+      console.log(msg);
+      if (msg === 'Register succeed') {
+        setStep(prev => prev + 1);
+      } else if (msg === 'Same name exists') {
+        window.alert('이미 존재하는 닉네임입니다.');
+        pageMove('/login');
+      } else {
+        window.alert('이미 가입된 이메일입니다.');
+        pageMove('/login');
+      }
     } else {
       setStep(prev => prev + 1);
     }
   };
 
+  const onProfile = () => {
+    pageMove('/profile');
+  };
+
   return (
     <div>
       {step === 1 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm onSubmit={onSubmit}>
           <div className="title">
             <div>로그인에 사용할</div>
             <div>이메일을 입력해주세요.</div>
@@ -111,7 +125,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
         </SSignUpForm>
       )}
       {step === 2 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm onSubmit={onSubmit}>
           <div className="title">
             <div>로그인에 사용할</div>
             <div>비밀번호를 입력해주세요.</div>
@@ -182,17 +196,17 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
         </SSignUpForm>
       )}
       {step === 3 && (
-        <SSignUpForm action="" method="POST" onSubmit={onSubmit}>
+        <SSignUpForm onSubmit={onSubmit}>
           <div className="title">
-            <div>로그인에 사용할</div>
-            <div>닉네임을 입력해주세요.</div>
+            <div>활동 닉네임을</div>
+            <div>입력해주세요.</div>
           </div>
           <div className="inputWrap">
             <input
               type="text"
               name="nickname"
               onChange={onChange}
-              placeholder="닉네임 입력"
+              placeholder="닉네임"
               value={nickname}
               className={isNickname ? 'active' : ''}
             />
@@ -212,6 +226,25 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
             disabled={!isNickname}
           >
             가입
+          </button>
+        </SSignUpForm>
+      )}
+      {step === 4 && (
+        <SSignUpForm onSubmit={onSubmit} className="profileWrap">
+          <div className="title last">
+            <Success />
+            <div className="success">회원가입 완료!</div>
+            <div className="description">
+              <div>GG타운 가입이 완료되었습니다.</div>
+              <div>프로필을 등록해주세요.</div>
+            </div>
+          </div>
+          <button
+            className="signUpBtn profile"
+            type="button"
+            onClick={onProfile}
+          >
+            프로필 등록하러 가기
           </button>
         </SSignUpForm>
       )}
