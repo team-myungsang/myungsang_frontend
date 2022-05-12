@@ -13,4 +13,6 @@ export const PATH = {
   PROFILE: '/profile',
   /** 마이 비디오 */
   MY_VIDEO: '/my',
+  /** 업로드 */
+  UPLOAD: '/upload',
 };
