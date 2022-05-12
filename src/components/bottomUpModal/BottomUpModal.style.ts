@@ -85,5 +85,6 @@ export const SOverlay = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: ${zIndexes.Modal};
   background-color: rgba(0, 0, 0, 0.75);
 `;
