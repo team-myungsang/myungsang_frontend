@@ -1,5 +1,6 @@
+import { setBodyScroll } from '@utils/scroll';
 import { ReactElement, useEffect, useState } from 'react';
-import { Overlay, SBottomUpModal } from './BottomUpModal.style';
+import { SOverlay, SBottomUpModal } from './BottomUpModal.style';
 
 interface BottomUpModalProps {
   content: ReactElement;
@@ -11,9 +12,11 @@ function BottomUpModal({ content, visible }: BottomUpModalProps) {
 
   useEffect(() => {
     if (visible) {
+      setBodyScroll(false);
       setClose(false);
     } else {
       setTimeout(() => {
+        setBodyScroll(true);
         setClose(true);
       }, 400);
     }
@@ -23,7 +26,7 @@ function BottomUpModal({ content, visible }: BottomUpModalProps) {
 
   return (
     <>
-      <Overlay />
+      <SOverlay visible={visible} />
       <SBottomUpModal visible={visible}>
         <div className="modalWrapper">
           <div className="contentWrapper">{content}</div>
