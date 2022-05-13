@@ -101,3 +101,12 @@ export async function signUpSubmit({
   const res = await axios.post('/register', data, { headers });
   return res.data.msg;
 }
+
+export async function getMovie() {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.get('/video/1', { headers });
+
+  return res;
+}
