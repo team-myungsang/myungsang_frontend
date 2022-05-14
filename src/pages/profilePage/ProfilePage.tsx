@@ -2,6 +2,8 @@ import { getProfile, submitProfile } from '@apis/auth';
 import { ReactComponent as ProfileImg } from '@assets/profile_image.svg';
 import { ReactComponent as ProfileEdit } from '@assets/profile_edit.svg';
 import CenterPopModal from '@components/centerPopModal/CenterPopModal';
+import BottomUpModal from '@components/bottomUpModal/BottomUpModal';
+import { SAccountModalContent } from '@components/footer/Footer.style';
 import Footer from '@components/footer/Footer';
 import {
   ChangeEvent,
@@ -35,7 +37,8 @@ interface HeaderProps {
 }
 
 interface AccountProps {
-  setIsModal: Dispatch<SetStateAction<boolean>>;
+  setIsCenterModal: Dispatch<SetStateAction<boolean>>;
+  setIsBottomModal: Dispatch<SetStateAction<boolean>>;
   form: Object;
   setForm: Dispatch<
     SetStateAction<{
@@ -138,12 +141,17 @@ function ProfileMain({ setInitNickname }: MainProps) {
   );
 }
 
-function ProfileAccount({ setIsModal, setForm, form }: AccountProps) {
+function ProfileAccount({
+  setIsCenterModal,
+  setIsBottomModal,
+  setForm,
+  form,
+}: AccountProps) {
   const onClick = (e: MouseEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-    setIsModal(true);
     console.log(e.target);
     if (value === '로그아웃') {
+      setIsCenterModal(true);
       setForm({
         ...form,
         title: '로그아웃 하시겠습니까?',
@@ -151,38 +159,54 @@ function ProfileAccount({ setIsModal, setForm, form }: AccountProps) {
         rightText: '확인',
       });
     } else {
-      setForm({
-        ...form,
-        title: '회원탈퇴 하시겠습니까?',
-        leftText: '취소',
-        rightText: '확인',
-      });
+      setIsBottomModal(true);
     }
   };
   return (
     <SProfileAccountBox>
       <input type="submit" value="로그아웃" onClick={onClick} />
-      <input type="submit" value="회원탈퇴" onClick={onClick} />
+      <input type="submit" value="계정관리" onClick={onClick} />
     </SProfileAccountBox>
   );
 }
 
 function ProfilePage() {
   const [initNickname, setInitNickname] = useState('');
-  const [isModal, setIsModal] = useState(false);
+  const [isCenterModal, setIsCenterModal] = useState(false);
+  const [isBottomModal, setIsBottomModal] = useState(false);
   const [form, setForm] = useState({
     title: '',
     leftText: '',
     rightText: '',
   });
 
+  const onCloseBottomModal = () => setIsBottomModal(false);
+
   return (
     <SLayout>
-      {isModal && <CenterPopModal form={form} setIsModal={setIsModal} />}
+      {isCenterModal && (
+        <CenterPopModal form={form} setIsCenterModal={setIsCenterModal} />
+      )}
       <ProfileHeader initNickname={initNickname} />
       <ProfileMain setInitNickname={setInitNickname} />
-      <ProfileAccount setIsModal={setIsModal} form={form} setForm={setForm} />
+      <ProfileAccount
+        setIsCenterModal={setIsCenterModal}
+        setIsBottomModal={setIsBottomModal}
+        form={form}
+        setForm={setForm}
+      />
       <Footer />
+      <BottomUpModal
+        content={
+          <SAccountModalContent>
+            <div className="title">계정관리</div>
+            <input type="button" value="회원탈퇴" />
+            <input type="button" value="닫기" onClick={onCloseBottomModal} />
+          </SAccountModalContent>
+        }
+        visible={isBottomModal}
+        onClose={onCloseBottomModal}
+      />
     </SLayout>
   );
 }

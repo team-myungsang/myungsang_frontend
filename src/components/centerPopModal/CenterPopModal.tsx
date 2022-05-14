@@ -7,13 +7,13 @@ interface CenterPopModalProps {
     leftText: string;
     rightText: string;
   };
-  setIsModal: Dispatch<SetStateAction<boolean>>;
+  setIsCenterModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function CenterPopModal({ form, setIsModal }: CenterPopModalProps) {
+function CenterPopModal({ form, setIsCenterModal }: CenterPopModalProps) {
   const { title, leftText, rightText } = form;
-  const onLeftClick = () => setIsModal(false);
-  const onRightClick = () => setIsModal(false); // 부모에서 함수를 가져온다.
+  const onLeftClick = () => setIsCenterModal(false);
+  const onRightClick = () => setIsCenterModal(false); // 부모에서 함수를 가져온다.
   console.log(title, leftText, rightText);
   return (
     <SModalLayout>
