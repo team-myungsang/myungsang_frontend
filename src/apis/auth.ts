@@ -21,6 +21,10 @@ interface SignUpResponse {
   password: string;
 }
 
+interface LikeCntResponse {
+  likeCnt: number;
+}
+
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
 //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
@@ -106,7 +110,19 @@ export async function getMovie() {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const res = await axios.get('/video/1', { headers });
+  const res = await axios.get('/videos/1', { headers });
+  console.log(res.data);
 
-  return res;
+  return res.data;
+}
+
+export async function submitLikeCnt({ likeCnt }: LikeCntResponse) {
+  const data = {
+    likeCnt,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/increaseLikeCnt', data, { headers });
+  console.log(res);
 }
