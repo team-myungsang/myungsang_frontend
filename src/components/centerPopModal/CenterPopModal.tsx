@@ -7,13 +7,20 @@ interface CenterPopModalProps {
     leftText: string;
     rightText: string;
   };
+  handleLogout: Function;
   setIsCenterModal: Dispatch<SetStateAction<boolean>>;
 }
 
-function CenterPopModal({ form, setIsCenterModal }: CenterPopModalProps) {
+function CenterPopModal({
+  form,
+  setIsCenterModal,
+  handleLogout,
+}: CenterPopModalProps) {
   const { title, leftText, rightText } = form;
   const onLeftClick = () => setIsCenterModal(false);
-  const onRightClick = () => setIsCenterModal(false); // 부모에서 함수를 가져온다.
+  const onRightClick = async () => {
+    await handleLogout();
+  };
   console.log(title, leftText, rightText);
   return (
     <SModalLayout>
@@ -21,7 +28,7 @@ function CenterPopModal({ form, setIsCenterModal }: CenterPopModalProps) {
         <div>{title}</div>
         <div>
           <input type="submit" value={leftText} onClick={onLeftClick} />
-          <input type="submit" value={rightText} onClick={onLeftClick} />
+          <input type="submit" value={rightText} onClick={onRightClick} />
         </div>
       </SModalBox>
     </SModalLayout>

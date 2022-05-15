@@ -7,7 +7,13 @@ declare global {
   }
 }
 
-function KakaoShare() {
+interface KakaoProps {
+  thumbnail: string;
+  title: string;
+  likeCnt: Number;
+}
+
+function KakaoShare({ thumbnail, title, likeCnt }: KakaoProps) {
   // 자바스크립트키로 카카오 init
   const initKakao = () => {
     if (window.Kakao) {
@@ -31,20 +37,19 @@ function KakaoShare() {
       objectType: 'feed',
       content: {
         // watch에서 제목 가져오기
-        title: '딸기 치즈 케익',
+        title: `${title}`,
         // watch에서 이미지 가져오기,.
-        imageUrl:
-          'http://mud-kage.kakao.co.kr/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+        imageUrl: `${thumbnail}`,
         link: {
           mobileWebUrl: url,
           webUrl: url,
         },
       },
-      social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
-      },
+      // social: {
+      //   likeCount: { likeCnt },
+      //   commentCount: 45,
+      //   sharedCount: 845,
+      // },
       buttons: [
         {
           title: '웹으로 보기',

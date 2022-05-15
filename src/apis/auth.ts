@@ -42,7 +42,12 @@ interface UserProps {
 }
 
 interface GetMovieProps {
-  movieId: number;
+  movieId: string | undefined;
+}
+
+interface HandelNicknameProps {
+  id: number;
+  nickname: string;
 }
 
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
@@ -125,8 +130,7 @@ export async function getProfile() {
   const headers = {
     'Content-Type': 'application/json',
   };
-  // /users/me 로 교체해야함.
-  const res = await axios.get<ProfileRequest, any>('/users/1', {
+  const res = await axios.get<ProfileRequest, any>('/users/me', {
     headers,
   });
   return res.data;
@@ -165,6 +169,7 @@ export async function IncreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
   const res = await axios.post('/increaseLikeCnt', data, { headers });
   console.log(res);
 }
+
 export async function DecreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
   const data = {
     videoId,
@@ -173,7 +178,7 @@ export async function DecreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const res = await axios.post('/DecreaseLikeCnt', data, { headers });
+  const res = await axios.post('/decreaseLikeCnt', data, { headers });
   console.log(res);
 }
 
@@ -190,4 +195,16 @@ export async function UserLogout({ id, email, password }: UserProps) {
   setRequestHeader('');
 
   console.log(res.data.message);
+}
+
+export async function handleNickname({ id, nickname }: HandelNicknameProps) {
+  const data = {
+    id,
+    name: nickname,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/updateName', data, { headers });
+  console.log(res);
 }

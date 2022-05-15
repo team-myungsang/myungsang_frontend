@@ -3,12 +3,13 @@ import styled from 'styled-components';
 export const SHeader = styled.div`
   display: flex;
   align-items: center;
-  background: #f0f0f0;
   height: 55px;
+  border: 1px solid #0d0d0d;
   > .left {
+    background: white;
     position: absolute;
     left: 0;
-    padding: 18px;
+    padding: 17px;
     border: none;
     cursor: pointer;
   }
@@ -92,8 +93,10 @@ export const SFeedback = styled.div`
   }
 `;
 
-export const SUser = styled.div`
-  font-size: 14px;
+export const SUser = styled.div<{ userImg: string }>`
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   border-width: 1px 0;
@@ -101,10 +104,12 @@ export const SUser = styled.div`
   border-style: solid;
   padding: 12px 16px;
   > .profile {
+    background-image: url(${props => props.userImg});
     width: 25px;
     height: 25px;
-    border-radius: 100%;
-    background: red;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-right: 10px;
   }
 `;

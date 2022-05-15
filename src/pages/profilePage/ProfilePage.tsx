@@ -1,4 +1,9 @@
-import { getProfile, submitProfile } from '@apis/auth';
+import {
+  getProfile,
+  submitProfile,
+  handleNickname,
+  UserLogout,
+} from '@apis/auth';
 import { ReactComponent as ProfileImg } from '@assets/profile_image.svg';
 import { ReactComponent as ProfileEdit } from '@assets/profile_edit.svg';
 import CenterPopModal from '@components/centerPopModal/CenterPopModal';
@@ -26,6 +31,7 @@ interface InputProps {
   value: string;
   title: string;
   setValue: Dispatch<SetStateAction<string>>;
+  disabled?: boolean;
 }
 
 interface MainProps {
@@ -61,7 +67,7 @@ function ProfileHeader({ initNickname }: HeaderProps) {
   );
 }
 
-function MyInput({ value, title, setValue }: InputProps) {
+function MyInput({ value, title, setValue, disabled }: InputProps) {
   const [newValue, setNewValue] = useState(value);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +84,7 @@ function MyInput({ value, title, setValue }: InputProps) {
           value={newValue}
           onChange={onChange}
           onBlur={onBlur}
+          disabled={disabled}
         />
         <ProfileEdit />
       </label>
@@ -91,6 +98,7 @@ function ProfileMain({ setInitNickname }: MainProps) {
   const [email, setEmail] = useState('');
   const [isNickname, setIsNickname] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
+  const [id, setId] = useState(0);
 
   useEffect(() => {
     const emailRegexp =
@@ -120,21 +128,30 @@ function ProfileMain({ setInitNickname }: MainProps) {
       const result = await getProfile();
       setNickname(result.name);
       setEmail(result.email);
+      setId(result.id);
       setInitNickname(result.name);
       setlogOn(true);
     };
     get();
   }, []);
 
+  const onClick = async () => {
+    const res = await handleNickname({ id, nickname });
+  };
+
   return (
     <SForm onSubmit={onSubmit}>
       {logOn && (
         <div>
           <MyInput value={nickname} title="닉네임" setValue={setNickname} />
-          <MyInput value={email} title="이메일" setValue={setEmail} />
+          <MyInput value={email} title="이메일" setValue={setEmail} disabled />
         </div>
       )}
-      <button type="submit" disabled={!(isNickname && isEmail)}>
+      <button
+        type="submit"
+        onClick={onClick}
+        disabled={!(isNickname && isEmail)}
+      >
         수정
       </button>
     </SForm>
@@ -149,7 +166,6 @@ function ProfileAccount({
 }: AccountProps) {
   const onClick = (e: MouseEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-    console.log(e.target);
     if (value === '로그아웃') {
       setIsCenterModal(true);
       setForm({
@@ -181,11 +197,18 @@ function ProfilePage() {
   });
 
   const onCloseBottomModal = () => setIsBottomModal(false);
+  const handleLogout = async () => {
+    console.log('로그아웃');
+  };
 
   return (
     <SLayout>
       {isCenterModal && (
-        <CenterPopModal form={form} setIsCenterModal={setIsCenterModal} />
+        <CenterPopModal
+          form={form}
+          setIsCenterModal={setIsCenterModal}
+          handleLogout={handleLogout}
+        />
       )}
       <ProfileHeader initNickname={initNickname} />
       <ProfileMain setInitNickname={setInitNickname} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import KakaoShare from '@components/MovieShare/movieShare';
 import { ReactComponent as GGTOWN } from '@assets/ggtown_logo.svg';
 import { ReactComponent as Watch } from '@assets/watch.svg';
@@ -25,6 +25,8 @@ function WatchPage() {
   const [isHeart, setIsHeart] = useState(false);
   const [memo, setMemo] = useState(false);
   const [likeCnt, setLikeCnt] = useState(0);
+  const PageMove = useNavigate();
+  const { movieId } = useParams();
   const [data, setData] = useState({
     content: '',
     createdAt: '',
@@ -33,10 +35,20 @@ function WatchPage() {
     videoUrl: '',
     videoId: 0,
     userId: 0,
+    userImg: '',
+    thumbnail: '',
   });
-  const PageMove = useNavigate();
-  const { content, createdAt, title, view, videoUrl, videoId, userId } = data;
-
+  const {
+    content,
+    createdAt,
+    title,
+    view,
+    videoUrl,
+    videoId,
+    userId,
+    userImg,
+    thumbnail,
+  } = data;
   const handleHeartClick = () => {
     setIsHeart(prev => !prev);
     if (isHeart) {
@@ -51,7 +63,7 @@ function WatchPage() {
 
   useEffect(() => {
     const get = async () => {
-      const result = await getMovie();
+      const result = await getMovie({ movieId });
       setData({
         ...data,
         content: result.content,
@@ -61,6 +73,8 @@ function WatchPage() {
         videoUrl: result.video_file.fullPath,
         videoId: result.id,
         userId: result.user.id,
+        userImg: result.user.file.fullPath,
+        thumbnail: result.thumbnail_file.fullPath,
       });
       setIsHeart(result.liked);
       setLikeCnt(result.likeCnt);
@@ -114,7 +128,7 @@ function WatchPage() {
           </div>
           <hr />
           <div className="share">
-            <KakaoShare />
+            <KakaoShare thumbnail={thumbnail} title={title} likeCnt={likeCnt} />
             <div>공유</div>
           </div>
           <hr />
@@ -124,8 +138,8 @@ function WatchPage() {
           </div>
         </SFeedback>
       </SMain>
-      <SUser>
-        <div className="profile">.</div>
+      <SUser userImg={userImg}>
+        <div className="profile" />
         <div>시계에 진심인 사람</div>
       </SUser>
       <SDescription onClick={handleMemoClick}>
