@@ -44,6 +44,7 @@ export async function uploadFeed({
 }: {
   title: string;
   content: string;
+  categories?: { id: number }[];
 }): Promise<number> {
   try {
     const res = await axios.post<UploadFeedResponse>('/videos', {
