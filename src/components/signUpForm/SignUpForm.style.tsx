@@ -51,6 +51,8 @@ export const SSignUpForm = styled.form`
       }
     }
     > .resetBtn {
+      width: 17px;
+      height: 17px;
       position: absolute;
       right: 0;
       margin: 10px;

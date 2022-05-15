@@ -3,10 +3,11 @@ import LikeListPage from '@pages/likeListPage/LikeListPage';
 import LoginPage from '@pages/loginPage/LoginPage';
 import MainPage from '@pages/mainPage/MainPage';
 import MyVideoPage from '@pages/myVideoPage/MyVideoPage';
+import NotFoundPage from '@pages/notFoundPage/NotFoundPage';
 import ProfilePage from '@pages/profilePage/ProfilePage';
 import SignUpPage from '@pages/signUpPage/SignUpPage';
+import WatchPage from '@pages/watchPage/WatchPage';
 import UploadPage from '@pages/uploadPage/UploadPage';
-import WatchPage from '@pages/WatchPage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         element={<UploadPage type="edit" />}
       />
       <Route path={PATH.PROFILE} element={<ProfilePage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
