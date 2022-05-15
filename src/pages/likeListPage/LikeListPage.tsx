@@ -33,7 +33,16 @@ function LikeListPage() {
     <SLikeListPage>
       <div className="likeList__Header">
         <h1>관심영상</h1>
-        <div className="desc">좋아요 표시한 동영상</div>
+        <div className="desc">
+          좋아요 표시한 동영상
+          {feedList && (
+            <div className="videoCount">
+              {feedList.length === 0
+                ? '동영상 없음'
+                : `동영상 ${feedList.length}개`}
+            </div>
+          )}
+        </div>
       </div>
       {feedList ? (
         feedList.length === 0 ? (
