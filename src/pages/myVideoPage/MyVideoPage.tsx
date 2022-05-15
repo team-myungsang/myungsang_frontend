@@ -5,7 +5,7 @@ import { Feed } from '@models/feed';
 import { ReactComponent as Trash } from '@assets/trash.svg';
 import { ReactComponent as Edit } from '@assets/edit.svg';
 import { useEffect, useState } from 'react';
-import { getMyVideos } from '@apis/video';
+import { deleteFeed, getMyVideos } from '@apis/video';
 import SkeletonFeedItem from '@components/feedItem/SkeletonFeedItem';
 import EmptyMyVideo from '@components/emptyMyVideo/EmptyMyVideo';
 import {
@@ -14,6 +14,7 @@ import {
 } from './MyVideoPage.style';
 
 function MyVideoPage() {
+  const [selectedFeedId, setSelectedFeedId] = useState<number>();
   const [feedList, setFeedList] = useState<Feed[]>();
   const [editFeedModalVisible, setEditFeedModalVisible] =
     useState<boolean>(false);
@@ -23,16 +24,28 @@ function MyVideoPage() {
 
     return () => {
       setFeedList(undefined);
+      setSelectedFeedId(undefined);
     };
   }, []);
 
   function onClickEditButton(feed: Feed) {
+    setSelectedFeedId(feed.id);
     setEditFeedModalVisible(true);
-    console.log(feed);
   }
 
-  function onClickDeleteFeedButton(feedId: number) {
-    /** @todo call api */
+  async function onClickDeleteFeedButton() {
+    try {
+      if (selectedFeedId) {
+        await deleteFeed(selectedFeedId);
+        alert('삭제되었습니다.');
+        getMyVideos().then(fl => setFeedList(fl));
+      }
+    } catch (error) {
+      alert('삭제 도중 오류가 발생했습니다.');
+    } finally {
+      setSelectedFeedId(undefined);
+      setEditFeedModalVisible(false);
+    }
   }
 
   function onCloseEditFeedModal() {
@@ -47,7 +60,12 @@ function MyVideoPage() {
           <EmptyMyVideo />
         ) : (
           feedList.map(feed => (
-            <FeedItem key={`feed_${feed.id}`} type="default" feed={feed} />
+            <FeedItem
+              key={`feed_${feed.id}`}
+              type="my"
+              feed={feed}
+              onClickEditButton={onClickEditButton}
+            />
           ))
         )
       ) : (
@@ -63,7 +81,11 @@ function MyVideoPage() {
               수정하기
               <div />
             </button>
-            <button type="button" className="deleteButton" onClick={() => {}}>
+            <button
+              type="button"
+              className="deleteButton"
+              onClick={onClickDeleteFeedButton}
+            >
               <Trash />
               삭제하기
               <div />

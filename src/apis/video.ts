@@ -46,7 +46,7 @@ export async function uploadFeed({
   content: string;
 }): Promise<number> {
   try {
-    const res = await axios.post<UploadFeedResponse>('/video', {
+    const res = await axios.post<UploadFeedResponse>('/videos', {
       title,
       content,
     });
@@ -76,5 +76,14 @@ export async function uploadFiles({
     console.log(res.data);
   } catch (error) {
     throw new Error('uploadFiles Error');
+  }
+}
+
+export async function deleteFeed(feedId: number) {
+  try {
+    const res = await axios.delete(`/videos/${feedId}`);
+    console.log(res.data.msg);
+  } catch (error) {
+    throw new Error('deleteFeed Error');
   }
 }
