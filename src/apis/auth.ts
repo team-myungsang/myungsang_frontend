@@ -30,6 +30,38 @@ interface ProfileResponse {
   email: string;
 }
 
+interface LikeCntResponse {
+  videoId: number;
+  userId: number;
+}
+
+interface UserProps {
+  id: number;
+  email: string;
+  password: string;
+}
+
+interface GetMovieProps {
+  movieId: string | undefined;
+}
+
+interface HandelNicknameProps {
+  id: number;
+  nickname: string;
+}
+
+// function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
+//   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+//   setRefreshTokenCookie(refreshToken, refreshExpiresIn);
+
+//   if (refreshExpiresIn - 60000 < 0) {
+//     setTimeout(silentRefresh, 60000);
+//     return;
+//   }
+
+//   setTimeout(silentRefresh, refreshExpiresIn - 60000);
+// }
 function setRequestHeader(accessToken: string): void {
   axios.defaults.headers = { accessToken: `${accessToken}` } as any;
 }
@@ -98,8 +130,7 @@ export async function getProfile() {
   const headers = {
     'Content-Type': 'application/json',
   };
-  // /users/me 로 교체해야함.
-  const res = await axios.get<ProfileRequest, any>('/users/1', {
+  const res = await axios.get<ProfileRequest, any>('/users/me', {
     headers,
   });
   return res.data;
@@ -115,4 +146,65 @@ export async function submitProfile({ email, nickname }: ProfileResponse) {
   };
   const res = await axios.post('/', data, { headers });
   return res.data.msg;
+}
+
+export async function getMovie({ movieId }: GetMovieProps) {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.get(`/videos/${movieId}`, { headers });
+  console.log(res.data);
+
+  return res.data;
+}
+
+export async function IncreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
+  const data = {
+    videoId,
+    userId,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/increaseLikeCnt', data, { headers });
+  console.log(res);
+}
+
+export async function DecreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
+  const data = {
+    videoId,
+    userId,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/decreaseLikeCnt', data, { headers });
+  console.log(res);
+}
+
+export async function UserLogout({ id, email, password }: UserProps) {
+  const data = {
+    id,
+    email,
+    password,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/logout', data, { headers });
+  setRequestHeader('');
+
+  console.log(res.data.message);
+}
+
+export async function handleNickname({ id, nickname }: HandelNicknameProps) {
+  const data = {
+    id,
+    name: nickname,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/updateName', data, { headers });
+  console.log(res);
 }
