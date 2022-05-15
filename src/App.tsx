@@ -20,7 +20,7 @@ function App() {
       <Route path={PATH.MY_VIDEO} element={<MyVideoPage />} />
       <Route path={PATH.UPLOAD} element={<UploadPage type="new" />} />
       <Route
-        path={`${PATH.UPLOAD}/:movieId`}
+        path={`${PATH.UPLOAD}/:feedId`}
         element={<UploadPage type="edit" />}
       />
       <Route path={PATH.PROFILE} element={<ProfilePage />} />

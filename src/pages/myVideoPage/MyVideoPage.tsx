@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { deleteFeed, getMyVideos } from '@apis/video';
 import SkeletonFeedItem from '@components/feedItem/SkeletonFeedItem';
 import EmptyMyVideo from '@components/emptyMyVideo/EmptyMyVideo';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '@constants/path';
 import {
   SEditFeedModalContent,
   SMyVideoPageWrapper,
@@ -18,6 +20,7 @@ function MyVideoPage() {
   const [feedList, setFeedList] = useState<Feed[]>();
   const [editFeedModalVisible, setEditFeedModalVisible] =
     useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMyVideos().then(fl => setFeedList(fl));
@@ -28,9 +31,19 @@ function MyVideoPage() {
     };
   }, []);
 
-  function onClickEditButton(feed: Feed) {
+  function onClickMoreButton(feed: Feed) {
     setSelectedFeedId(feed.id);
     setEditFeedModalVisible(true);
+  }
+
+  function onClickEditButton() {
+    alert('아직 개발중입니다.');
+    /** @todo 수정 페이지 개발 필요 */
+    // navigate(`${PATH.UPLOAD}/${selectedFeedId}`, {
+    //   state: {
+    //     selectedFeed: feedList?.find(f => f.id === selectedFeedId),
+    //   },
+    // });
   }
 
   async function onClickDeleteFeedButton() {
@@ -64,7 +77,7 @@ function MyVideoPage() {
               key={`feed_${feed.id}`}
               type="my"
               feed={feed}
-              onClickEditButton={onClickEditButton}
+              onClickEditButton={onClickMoreButton}
             />
           ))
         )
@@ -78,7 +91,11 @@ function MyVideoPage() {
         visible={editFeedModalVisible}
         content={
           <SEditFeedModalContent>
-            <button type="button" className="editButton" onClick={() => {}}>
+            <button
+              type="button"
+              className="editButton"
+              onClick={onClickEditButton}
+            >
               <Edit />
               수정하기
               <div />
