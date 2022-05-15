@@ -69,7 +69,9 @@ function MyVideoPage() {
           ))
         )
       ) : (
-        Array.from(Array(10)).map(_ => <SkeletonFeedItem />)
+        Array.from(Array(10)).map((_, index) => (
+          <SkeletonFeedItem key={`skeleton_${index}`} />
+        ))
       )}
       <Footer />
       <BottomUpModal
