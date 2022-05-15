@@ -5,7 +5,7 @@ export interface Feed {
   id: number;
   user: User;
   title: string;
-  like: number;
+  likeCnt: number;
   view: number;
   createdAt: number;
   updatedAt: number;

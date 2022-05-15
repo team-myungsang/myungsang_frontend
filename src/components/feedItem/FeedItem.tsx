@@ -2,6 +2,7 @@ import { Feed } from '@models/feed';
 import { ReactComponent as More } from '@assets/more.svg';
 import { ReactComponent as Like } from '@assets/like.svg';
 import { ReactComponent as View } from '@assets/view.svg';
+import profileSrc from '@assets/profile.png';
 import dayjs from 'dayjs';
 import { countFormatter } from '@utils/format';
 import { Link } from 'react-router-dom';
@@ -16,18 +17,13 @@ interface FeedItemProps {
 }
 
 function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
-  const onClickMoreBtn = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    /** @todo 더 보기 아이콘 클릭 로직 필요 */
-    alert('more button click');
-  };
-
   function handleEditButtonClick(e: React.MouseEvent<HTMLDivElement>) {
     e.preventDefault();
     if (onClickEditButton) {
       onClickEditButton(feed);
     }
   }
+
   return (
     <Link to={`${PATH.WATCH}${feed.id}`}>
       <SFeed>
@@ -35,16 +31,15 @@ function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
           <div className="feedHeader">
             {/* Avatar */}
             <div className="avatar">
-              <img src={feed.user.file?.fullPath} alt={`${feed.id}_avatar`} />
+              {feed.user.file?.fullPath ? (
+                <img src={feed.user.file?.fullPath} alt={`${feed.id}_avatar`} />
+              ) : (
+                <img src={profileSrc} alt="default_profile" />
+              )}
             </div>
 
             {/* Nickname */}
             <div className="nickName">{feed.user.nickname}</div>
-
-            {/* More Button */}
-            <div className="moreBtn" onClick={onClickMoreBtn} aria-hidden>
-              <More />
-            </div>
           </div>
         )}
         <div className="feedThumb">
@@ -55,14 +50,14 @@ function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
           <div className="feedInfoWrapper">
             <div className="feedInfoItem">
               <Like />
-              {countFormatter(feed.like)}개
+              {countFormatter(feed.likeCnt)}개
             </div>
             <div className="feedInfoItem">
               <View />
               {countFormatter(feed.view)}회
             </div>
             <div className="feedInfoItem">
-              {dayjs.unix(feed.createdAt).fromNow()}
+              {dayjs(feed.createdAt).fromNow()}
             </div>
           </div>
         </div>
