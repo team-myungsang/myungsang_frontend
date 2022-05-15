@@ -1,6 +1,7 @@
 import { Feed } from '@models/feed';
 import { ReactComponent as More } from '@assets/more.svg';
 import { ReactComponent as Like } from '@assets/like.svg';
+import { ReactComponent as LikeAction } from '@assets/like_action.svg';
 import { ReactComponent as View } from '@assets/view.svg';
 import profileSrc from '@assets/profile.png';
 import dayjs from 'dayjs';
@@ -39,7 +40,7 @@ function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
             </div>
 
             {/* Nickname */}
-            <div className="nickName">{feed.user.nickname}</div>
+            <div className="nickName">{feed.user.name}</div>
           </div>
         )}
         <div className="feedThumb">
@@ -49,7 +50,7 @@ function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
           <div className="feedTitle">{feed.title}</div>
           <div className="feedInfoWrapper">
             <div className="feedInfoItem">
-              <Like />
+              {feed.liked ? <LikeAction /> : <Like />}
               {countFormatter(feed.likeCnt)}개
             </div>
             <div className="feedInfoItem">
