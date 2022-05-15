@@ -35,6 +35,16 @@ interface LikeCntResponse {
   userId: number;
 }
 
+interface UserProps {
+  id: number;
+  email: string;
+  password: string;
+}
+
+interface GetMovieProps {
+  movieId: number;
+}
+
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
 //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
@@ -139,11 +149,11 @@ export async function submitProfile({ email, nickname }: ProfileResponse) {
   return res.data.msg;
 }
 
-export async function getMovie() {
+export async function getMovie({ movieId }: GetMovieProps) {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const res = await axios.get('/videos/1', { headers });
+  const res = await axios.get(`/videos/${movieId}`, { headers });
   console.log(res.data);
 
   return res.data;
@@ -170,4 +180,19 @@ export async function DecreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
   };
   const res = await axios.post('/DecreaseLikeCnt', data, { headers });
   console.log(res);
+}
+
+export async function UserLogout({ id, email, password }: UserProps) {
+  const data = {
+    id,
+    email,
+    password,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/logout', data, { headers });
+  setRequestHeader('');
+
+  console.log(res.data.message);
 }
