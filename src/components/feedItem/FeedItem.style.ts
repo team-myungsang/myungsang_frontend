@@ -110,3 +110,64 @@ export const SFeed = styled.div`
     }
   }
 `;
+
+export const SSkeletonFeedItem = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 20px 0 15px;
+  margin-bottom: 10px;
+  color: ${p => p.theme.color.black};
+  background-color: #fff;
+
+  .feedHeader {
+    display: flex;
+    align-items: center;
+    padding: 0px 15px;
+    margin-bottom: 10px;
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #efefef;
+    }
+
+    .nickName {
+      margin-left: 8px;
+      width: 70px;
+      height: 15px;
+      background-color: #efefef;
+      border-radius: 10px;
+    }
+  }
+  .feedThumb {
+    width: 100%;
+    height: 230px;
+    background-color: #efefef;
+  }
+
+  .feedFooter {
+    padding: 10px 15px;
+    .title {
+      width: 100%;
+      height: 18px;
+      background-color: #efefef;
+      border-radius: 10px;
+    }
+
+    .infoWrapper {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      .infoItem {
+        width: 50px;
+        height: 18px;
+        border-radius: 10px;
+        background-color: #efefef;
+      }
+      .infoItem + .infoItem {
+        margin-left: 10px;
+      }
+    }
+  }
+`;

@@ -1,7 +1,41 @@
+import { Category } from '@models/category';
+import { Feed } from '@models/feed';
 import axios from 'axios';
 
 interface UploadFeedResponse {
   id: number;
+}
+
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const res = await axios.get<Category[]>('/categories');
+    return res.data;
+  } catch (error) {
+    throw Error('getCategories Error');
+  }
+}
+
+export async function getMainVideos(categoryId?: string): Promise<Feed[]> {
+  try {
+    const usp = new URLSearchParams();
+    if (categoryId) {
+      usp.set('category_id', categoryId);
+    }
+    const res = await axios.get<Feed[]>(`/main/videos?${usp.toString()}`);
+
+    return res.data;
+  } catch (error) {
+    throw Error('getMainVideos Error');
+  }
+}
+
+export async function getMyVideos(): Promise<Feed[]> {
+  try {
+    const res = await axios.get<Feed[]>('/videos/me');
+    return res.data;
+  } catch (error) {
+    throw Error('getMainVideos Error');
+  }
 }
 
 export async function uploadFeed({
@@ -12,7 +46,7 @@ export async function uploadFeed({
   content: string;
 }): Promise<number> {
   try {
-    const res = await axios.post<UploadFeedResponse>('/video', {
+    const res = await axios.post<UploadFeedResponse>('/videos', {
       title,
       content,
     });
@@ -26,21 +60,29 @@ export async function uploadFeed({
 
 export async function uploadFiles({
   id,
-  videoFile,
-  thumbnailFile,
+  formData,
 }: {
   id: number;
-  videoFile: FormData;
-  thumbnailFile: FormData;
+  formData: FormData;
 }) {
   try {
-    const res = await axios.post(`/videos/${id}/upload_file`, {
-      video_file: videoFile,
-      thumbnail_file: thumbnailFile,
+    const res = await axios.post(`/videos/${id}/upload_file`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     console.log(res.data);
   } catch (error) {
     throw new Error('uploadFiles Error');
+  }
+}
+
+export async function deleteFeed(feedId: number) {
+  try {
+    const res = await axios.delete(`/videos/${feedId}`);
+    console.log(res.data.msg);
+  } catch (error) {
+    throw new Error('deleteFeed Error');
   }
 }

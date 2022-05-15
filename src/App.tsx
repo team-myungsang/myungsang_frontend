@@ -1,5 +1,5 @@
 import { PATH } from '@constants/path';
-import LikeListPage from '@pages/LikeListPage';
+import LikeListPage from '@pages/likeListPage/LikeListPage';
 import LoginPage from '@pages/loginPage/LoginPage';
 import MainPage from '@pages/mainPage/MainPage';
 import MyVideoPage from '@pages/myVideoPage/MyVideoPage';

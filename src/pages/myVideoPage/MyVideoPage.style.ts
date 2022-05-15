@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 export const SMyVideoPageWrapper = styled.div`
   background-color: #f5f5f5;
+  margin-bottom: 50px;
 
   h1 {
     margin: 0;
