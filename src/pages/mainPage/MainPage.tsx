@@ -1,8 +1,8 @@
 import { getMainVideos } from '@apis/video';
 import FeedItem from '@components/feedItem/FeedItem';
+import SkeletonFeedItem from '@components/feedItem/SkeletonFeedItem';
 import Footer from '@components/footer/Footer';
 import Header from '@components/header/Header';
-import { mockFeed } from '@mocks/feed';
 import { Feed } from '@models/feed';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -15,27 +15,22 @@ function MainPage() {
   useEffect(() => {
     const sp = new URLSearchParams(location.search);
     const category = sp.get('c') || undefined;
-    /** @todo call api */
 
-    getMainVideos(category).then(fl =>
-      setFeedList(prev => {
-        if (!prev) {
-          return [...fl];
-        }
-        return [...prev, ...fl];
-      }),
-    );
+    getMainVideos(category).then(fl => setFeedList(fl));
+
+    return () => {
+      setFeedList(undefined);
+    };
   }, [location.search]);
-
-  console.log(feedList);
 
   return (
     <SMainPageWrapper>
       <Header />
-      {feedList &&
-        feedList.map(feed => (
-          <FeedItem key={`feed_${feed.id}`} type="default" feed={feed} />
-        ))}
+      {feedList
+        ? feedList.map(feed => (
+            <FeedItem key={`feed_${feed.id}`} type="default" feed={feed} />
+          ))
+        : Array.from(Array(10)).map(_ => <SkeletonFeedItem />)}
       <Footer />
     </SMainPageWrapper>
   );
