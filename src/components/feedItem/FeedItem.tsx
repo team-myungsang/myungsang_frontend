@@ -10,32 +10,43 @@ import React from 'react';
 import { SFeed } from './FeedItem.style';
 
 interface FeedItemProps {
+  type: 'default' | 'my';
   feed: Feed;
+  onClickEditButton?: (feed: Feed) => void;
 }
 
-function FeedItem({ feed }: FeedItemProps) {
+function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
   const onClickMoreBtn = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     /** @todo 더 보기 아이콘 클릭 로직 필요 */
     alert('more button click');
   };
+
+  function handleEditButtonClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    if (onClickEditButton) {
+      onClickEditButton(feed);
+    }
+  }
   return (
     <Link to={`${PATH.WATCH}${feed.id}`}>
       <SFeed>
-        <div className="feedHeader">
-          {/* Avatar */}
-          <div className="avatar">
-            <img src={feed.user.file?.fullPath} alt={`${feed.id}_avatar`} />
-          </div>
+        {type === 'default' && (
+          <div className="feedHeader">
+            {/* Avatar */}
+            <div className="avatar">
+              <img src={feed.user.file?.fullPath} alt={`${feed.id}_avatar`} />
+            </div>
 
-          {/* Nickname */}
-          <div className="nickName">{feed.user.nickname}</div>
+            {/* Nickname */}
+            <div className="nickName">{feed.user.nickname}</div>
 
-          {/* More Button */}
-          <div className="moreBtn" onClick={onClickMoreBtn} aria-hidden>
-            <More />
+            {/* More Button */}
+            <div className="moreBtn" onClick={onClickMoreBtn} aria-hidden>
+              <More />
+            </div>
           </div>
-        </div>
+        )}
         <div className="feedThumb">
           <img src={feed.thumbPath} alt={`${feed.id}_thumb`} />
         </div>
@@ -55,6 +66,17 @@ function FeedItem({ feed }: FeedItemProps) {
             </div>
           </div>
         </div>
+
+        {type === 'my' && (
+          <div
+            className="editButton"
+            onClick={handleEditButtonClick}
+            role="button"
+            tabIndex={0}
+          >
+            <More />
+          </div>
+        )}
       </SFeed>
     </Link>
   );
