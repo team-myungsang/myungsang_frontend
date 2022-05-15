@@ -24,9 +24,10 @@ function InitProvider({ children }: InitProviderProps) {
     onBoardingHolding();
   }, []);
 
-  if (!onBoardingFinished && !isInitialized) {
+  if (!onBoardingFinished || !isInitialized) {
     return <Onboarding step={onBordingStep} />;
   }
+
   return children;
 }
 
