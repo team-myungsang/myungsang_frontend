@@ -47,9 +47,9 @@ export async function getMyVideos(): Promise<Feed[]> {
 }
 export async function getLikeVideos(): Promise<Feed[]> {
   try {
-    const res = await axios.get<ResponseFeed[]>('/getInterestFeed');
+    const res = await axios.get<{ videos: ResponseFeed[] }>('/getInterestFeed');
 
-    const feedList = res.data.map(f => serializeFeed(f));
+    const feedList = res.data.videos.map(f => serializeFeed(f));
     return feedList;
   } catch (error) {
     throw Error('getMainVideos Error');
