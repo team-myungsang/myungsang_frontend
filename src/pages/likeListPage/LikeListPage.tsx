@@ -1,6 +1,5 @@
 import FeedItem from '@components/feedItem/FeedItem';
 import Footer from '@components/footer/Footer';
-import { mockFeed } from '@mocks/feed';
 import { SLikeListPage } from './LikeListPage.style';
 
 function LikeListPage() {
@@ -11,9 +10,9 @@ function LikeListPage() {
         <div className="desc">좋아요 표시한 동영상</div>
       </div>
 
-      {Array.from(Array(10)).map((_, i) => (
+      {/* {Array.from(Array(10)).map((_, i) => (
         <FeedItem key="feed" type="default" feed={mockFeed} />
-      ))}
+      ))} */}
 
       <Footer />
     </SLikeListPage>

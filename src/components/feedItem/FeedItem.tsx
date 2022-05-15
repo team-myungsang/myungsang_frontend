@@ -43,7 +43,7 @@ function FeedItem({ type, feed, onClickEditButton }: FeedItemProps) {
           </div>
         )}
         <div className="feedThumb">
-          <img src={feed.thumbPath} alt={`${feed.id}_thumb`} />
+          <img src={feed?.thumbnailFile?.fullPath} alt={`${feed.id}_thumb`} />
         </div>
         <div className="feedFooter">
           <div className="feedTitle">{feed.title}</div>

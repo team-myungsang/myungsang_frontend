@@ -115,6 +115,9 @@ function UploadPage({ type }: UploadPageProps) {
         id: feedId,
         formData,
       });
+
+      alert('영상 업로드 완료!');
+      navigate(-1);
     } catch (error) {
       alert(data);
     }
