@@ -103,4 +103,13 @@ export const SLoginPageWrapper = styled.div`
       height: 13px;
     }
   }
+
+  .errorMsg {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -0.03em;
+
+    color: #ff613f;
+  }
 `;

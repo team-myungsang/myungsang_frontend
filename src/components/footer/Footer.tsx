@@ -57,11 +57,10 @@ function Footer({ hiddenUpButton }: FooterProps) {
     navigate(to);
   }
   function onClickUploadFeedButton() {
-    /** @todo 로그인 구현후 유저 체크 */
-    // if (!user) {
-    // setLoginModalVisible(true);
-    // return;
-    // }
+    if (!user) {
+      setLoginModalVisible(true);
+      return;
+    }
 
     setSelectUploadTypeOfFeedModal(true);
   }
