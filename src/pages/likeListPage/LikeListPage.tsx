@@ -1,5 +1,5 @@
 function LikeListPage() {
-  return <div>LikeListPage</div>;
+  return <div />;
 }
 
 export default LikeListPage;
