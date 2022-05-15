@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
-import { mockLogin, mockSilentRefresh } from '@mocks/auth';
 import { User } from '@models/user';
-import { getRefreshTokenCookie, setRefreshTokenCookie } from '@utils/cookie';
+import { getAccessTokenCookie, setAccessTokenCookie } from '@utils/cookie';
 import axios from 'axios';
-import { getUser } from './user';
+import { getMe, getUser } from './user';
 
 export interface LoginResponse {
   msg: string;
   userId: number;
+  expTime: number;
   accessToken: string;
 }
 
@@ -30,62 +30,45 @@ interface ProfileResponse {
   email: string;
 }
 
-// function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
-//   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-//   setRefreshTokenCookie(refreshToken, refreshExpiresIn);
-
-//   if (refreshExpiresIn - 60000 < 0) {
-//     setTimeout(silentRefresh, 60000);
-//     return;
-//   }
-
-//   setTimeout(silentRefresh, refreshExpiresIn - 60000);
-// }
+function setRequestHeader(accessToken: string): void {
+  axios.defaults.headers = { accessToken: `${accessToken}` } as any;
+}
 
 export async function login(data: {
   email: string;
   password: string;
 }): Promise<User> {
   try {
-    const res = await axios.post<LoginResponse>('/login', data, {
-      withCredentials: true,
-    });
-    console.log(res.headers['set-cookie']);
-    console.log(res.data);
+    const res = await axios.post<LoginResponse>('/login', data);
 
-    // loginSuccess(res.data);
-    // const user = await getUser(mockData.user_id);
-    // return user;
-    throw Error('dtd');
-  } catch (error) {
-    /** @todo error handling */
+    setRequestHeader(res.data.accessToken);
+    setAccessTokenCookie(res.data.accessToken, res.data.expTime);
+    const user = await getUser(res.data.userId);
+    return user;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    }
     throw new Error('onLogin Error');
   }
 }
 
-export async function silentRefresh(): Promise<User | undefined> {
-  const refreshToken = getRefreshTokenCookie();
+export async function checkAccessToken(): Promise<User | undefined> {
+  const accessToken = getAccessTokenCookie();
 
-  if (!refreshToken) {
+  if (!accessToken) {
     return undefined;
   }
-  // const res = await axios.post<LoginResponse>('/refresh', {
-  //   refresh_token: refreshTokenId,
-  // });
 
-  // onLoginSuccess(res.data);
-  const mockData = await mockSilentRefresh();
+  setRequestHeader(accessToken);
 
-  // loginSuccess(mockData);
-  // const user = await getUser(mockData.user_id);
+  const user = await getMe();
 
-  // return user;
-  return undefined;
+  return user;
 }
 
 export async function logout() {
-  const refreshToken = getRefreshTokenCookie();
+  const refreshToken = getAccessTokenCookie();
 
   const res = await axios.post<LogoutResponse>('/logout', {
     refresh_token: refreshToken,

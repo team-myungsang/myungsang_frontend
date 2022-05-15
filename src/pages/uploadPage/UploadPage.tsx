@@ -1,11 +1,18 @@
-import { uploadFeed, uploadFiles } from '@apis/video';
+import { getCategories, getVideo, uploadFeed, uploadFiles } from '@apis/video';
 import { ReactComponent as Back } from '@assets/back.svg';
 import { ReactComponent as ImgUpload } from '@assets/img_upload.svg';
 import { ReactComponent as FileUpload } from '@assets/file_upload.svg';
 import classNames from 'classnames';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
+import { Category } from '@models/category';
+import { Feed } from '@models/feed';
 import { SUploadPage } from './UploadPage.style';
 
 interface UploadPageProps {
@@ -14,17 +21,23 @@ interface UploadPageProps {
 
 function UploadPage({ type }: UploadPageProps) {
   const navigate = useNavigate();
-  const params = useParams<{ movieId: string }>();
+  const location = useLocation();
+  const params = useParams<{ feedId: string }>();
   const [searchParams] = useSearchParams();
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { isDirty, isValid },
   } = useForm<{
     link: string;
     title: string;
     content: string;
   }>({ mode: 'all' });
+  const [categoryList, setCategoryList] = useState<Category[]>();
+  const [selectedCategories, setSelectedCategories] = useState<
+    Record<string, boolean>
+  >({});
 
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [videoFile, setVideoFile] = useState<File>();
@@ -35,6 +48,31 @@ function UploadPage({ type }: UploadPageProps) {
   const [thumbUrl, setThumbUrl] = useState<any>();
 
   const uploadType = searchParams.get('ut');
+
+  useEffect(() => {
+    getCategories().then(cl => setCategoryList(cl));
+
+    return () => {
+      setCategoryList(undefined);
+      setSelectedCategories({});
+    };
+  }, []);
+
+  /** 수정 시 다이렉트로 들어왔는지 체크 및 데이터 불러오기 */
+  useEffect(() => {
+    const state = location.state as any;
+    if (state?.selectedFeed) {
+      setValue('title', state.selectedFeed.title);
+      setValue('content', state.selectedFeed.content);
+    } else {
+      getVideo(Number(params.feedId)).then(f => {
+        console.log(f);
+
+        setValue('title', f.title);
+        setValue('content', f.content);
+      });
+    }
+  }, [location.state]);
 
   function onClickVideoInput() {
     videoInputRef?.current?.click();
@@ -68,28 +106,40 @@ function UploadPage({ type }: UploadPageProps) {
     }
   }
 
+  function onClickCategoryItem(key: number) {
+    setSelectedCategories(prev => ({ ...prev, [key]: !prev[key.toString()] }));
+  }
+
   const onSubmit = handleSubmit(async data => {
     try {
       if (!thumbFile || !videoFile) {
         throw new Error('썸네일or비디오 파일 없음');
       }
-      const thumbFormData = new FormData();
-      thumbFormData.append('thumbnail', thumbFile);
-      const videoFormData = new FormData();
-      videoFormData.append('video', videoFile);
+      if (uploadType === 'embed') {
+        alert('임베드 업로드는 현재 준비중입니다.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('thumbnail_file', thumbFile);
+      formData.append('video_file', videoFile);
+
+      const categoryKeyList = Object.entries(selectedCategories)
+        .filter(([_, isSelected]) => isSelected)
+        .map(([key, _]) => ({ id: Number(key) }));
 
       const feedId = await uploadFeed({
         title: data.title,
         content: data.content,
+        categories: categoryKeyList,
       });
 
       await uploadFiles({
         id: feedId,
-        thumbnailFile: thumbFormData,
-        videoFile: videoFormData,
+        formData,
       });
 
-      console.log('완료');
+      alert('영상 업로드 완료!');
+      navigate(-1);
     } catch (error) {
       alert(data);
     }
@@ -177,13 +227,39 @@ function UploadPage({ type }: UploadPageProps) {
           {thumbUrl && <img src={thumbUrl} alt="" />}
         </div>
 
+        <label htmlFor="categories">영상 카테고리 선택</label>
+        <div className="categoriesWrapper">
+          {categoryList?.map(c => (
+            <span
+              key={`categoryItem_${c.id}`}
+              className={classNames('categoryItem', {
+                selected: selectedCategories[c.id.toString()],
+              })}
+              onClick={() => onClickCategoryItem(c.id)}
+              role="button"
+              tabIndex={0}
+            >
+              {c.title}
+            </span>
+          ))}
+        </div>
+
         <div>
-          <button
-            type="submit"
-            disabled={!isDirty || !isValid || !thumbFile || !videoFile}
-          >
-            영상 업로드하기
-          </button>
+          {type === 'new' ? (
+            <button
+              type="submit"
+              disabled={!isDirty || !isValid || !thumbFile || !videoFile}
+            >
+              영상 업로드하기
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={!isDirty || !isValid || !thumbFile || !videoFile}
+            >
+              수정하기
+            </button>
+          )}
         </div>
       </form>
     </SUploadPage>

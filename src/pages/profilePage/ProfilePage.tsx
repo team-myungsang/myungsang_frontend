@@ -205,7 +205,6 @@ function ProfilePage() {
           </SAccountModalContent>
         }
         visible={isBottomModal}
-        onClose={onCloseBottomModal}
       />
     </SLayout>
   );

@@ -1,5 +1,5 @@
 import { PATH } from '@constants/path';
-import LikeListPage from '@pages/LikeListPage';
+import LikeListPage from '@pages/likeListPage/LikeListPage';
 import LoginPage from '@pages/loginPage/LoginPage';
 import MainPage from '@pages/mainPage/MainPage';
 import MyVideoPage from '@pages/myVideoPage/MyVideoPage';
@@ -20,7 +20,7 @@ function App() {
       <Route path={PATH.MY_VIDEO} element={<MyVideoPage />} />
       <Route path={PATH.UPLOAD} element={<UploadPage type="new" />} />
       <Route
-        path={`${PATH.UPLOAD}/:movieId`}
+        path={`${PATH.UPLOAD}/:feedId`}
         element={<UploadPage type="edit" />}
       />
       <Route path={PATH.PROFILE} element={<ProfilePage />} />

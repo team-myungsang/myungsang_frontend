@@ -57,11 +57,10 @@ function Footer({ hiddenUpButton }: FooterProps) {
     navigate(to);
   }
   function onClickUploadFeedButton() {
-    /** @todo 로그인 구현후 유저 체크 */
-    // if (!user) {
-    // setLoginModalVisible(true);
-    // return;
-    // }
+    if (!user) {
+      setLoginModalVisible(true);
+      return;
+    }
 
     setSelectUploadTypeOfFeedModal(true);
   }
@@ -78,12 +77,13 @@ function Footer({ hiddenUpButton }: FooterProps) {
     <>
       {!hiddenUpButton && <ScrollTopButton />}
       <SFooter>
-        {footerItemList.map(fi => {
+        {footerItemList.map((fi, idx) => {
           if (fi.key === 'empty') {
-            return <div className="empty" />;
+            return <div key={fi.key} className="empty" />;
           }
           return (
             <div
+              key={fi.key}
               onClick={() => onClickFooterItem(fi.key)}
               role="button"
               tabIndex={0}

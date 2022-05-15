@@ -7,6 +7,7 @@ import { ReactComponent as CloseCircleFilled } from '@assets/close_circle_filled
 import { ReactComponent as Back } from '@assets/back.svg';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { SLoginPageWrapper } from './LoginPage.style';
 
 interface LoginFormData {
@@ -22,8 +23,14 @@ function LoginPage() {
     watch,
     formState: { isDirty, isValid },
   } = useForm<LoginFormData>({ mode: 'onChange' });
-  const { login } = useAuth();
+  const { user, login, error } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate(PATH.MAIN);
+    }
+  }, [user]);
 
   const onSubmit = handleSubmit(async data => {
     await login(data);
@@ -92,6 +99,7 @@ function LoginPage() {
             />
           )}
         </div>
+        {error?.message && <div className="errorMsg">{error.message}</div>}
 
         <div>
           <button type="submit" disabled={!isDirty || !isValid}>

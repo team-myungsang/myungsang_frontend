@@ -3,6 +3,7 @@ import { LoginResponse } from '@apis/auth';
 const mockLoginData = {
   msg: 'Login Success',
   userId: 1,
+  expTime: 12000000,
   accessToken: 'mockAccessToken',
 };
 

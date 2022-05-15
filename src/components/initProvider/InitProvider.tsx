@@ -9,20 +9,25 @@ interface InitProviderProps {
 function InitProvider({ children }: InitProviderProps) {
   const { isInitialized } = useAuth();
   const [onBoardingFinished, setOnBoardingFinished] = useState<boolean>(false);
+  const [onBordingStep, setOnBordingStep] = useState<1 | 2>(1);
 
   const onBoardingHolding = () => {
     setTimeout(() => {
-      setOnBoardingFinished(true);
-    }, 2000);
+      setOnBordingStep(2);
+      setTimeout(() => {
+        setOnBoardingFinished(true);
+      }, 2000);
+    }, 1000);
   };
 
   useEffect(() => {
     onBoardingHolding();
   }, []);
 
-  if (!onBoardingFinished && !isInitialized) {
-    return <Onboarding />;
+  if (!onBoardingFinished || !isInitialized) {
+    return <Onboarding step={onBordingStep} />;
   }
+
   return children;
 }
 

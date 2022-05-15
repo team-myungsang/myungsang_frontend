@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     authApi
-      .silentRefresh()
+      .checkAccessToken()
       .then(usr => {
         setUser(usr);
       })
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       // signUp,
     }),
-    [user, loading, error],
+    [user, loading, isInitialized, error],
   );
 
   return (
