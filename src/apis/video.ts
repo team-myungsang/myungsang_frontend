@@ -60,17 +60,16 @@ export async function uploadFeed({
 
 export async function uploadFiles({
   id,
-  videoFile,
-  thumbnailFile,
+  formData,
 }: {
   id: number;
-  videoFile: FormData;
-  thumbnailFile: FormData;
+  formData: FormData;
 }) {
   try {
-    const res = await axios.post(`/videos/${id}/upload_file`, {
-      video_file: videoFile,
-      thumbnail_file: thumbnailFile,
+    const res = await axios.post(`/videos/${id}/upload_file`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     console.log(res.data);

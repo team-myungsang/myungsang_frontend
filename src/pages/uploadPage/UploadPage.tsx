@@ -73,10 +73,13 @@ function UploadPage({ type }: UploadPageProps) {
       if (!thumbFile || !videoFile) {
         throw new Error('썸네일or비디오 파일 없음');
       }
-      const thumbFormData = new FormData();
-      thumbFormData.append('thumbnail', thumbFile);
-      const videoFormData = new FormData();
-      videoFormData.append('video', videoFile);
+      if (uploadType === 'embed') {
+        alert('임베드 업로드는 현재 준비중입니다.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('thumbnail_file', thumbFile);
+      formData.append('video_file', videoFile);
 
       const feedId = await uploadFeed({
         title: data.title,
@@ -85,8 +88,7 @@ function UploadPage({ type }: UploadPageProps) {
 
       await uploadFiles({
         id: feedId,
-        thumbnailFile: thumbFormData,
-        videoFile: videoFormData,
+        formData,
       });
 
       console.log('완료');
