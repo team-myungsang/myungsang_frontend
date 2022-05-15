@@ -1,27 +1,41 @@
+import { getMainVideos } from '@apis/video';
 import FeedItem from '@components/feedItem/FeedItem';
 import Footer from '@components/footer/Footer';
 import Header from '@components/header/Header';
 import { mockFeed } from '@mocks/feed';
-import { useEffect } from 'react';
+import { Feed } from '@models/feed';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SMainPageWrapper } from './MainPage.style';
 
 function MainPage() {
+  const [feedList, setFeedList] = useState<Feed[]>();
   const location = useLocation();
 
   useEffect(() => {
     const sp = new URLSearchParams(location.search);
-    const category = sp.get('c');
+    const category = sp.get('c') || undefined;
     /** @todo call api */
-    console.log(category);
+
+    getMainVideos(category).then(fl =>
+      setFeedList(prev => {
+        if (!prev) {
+          return [...fl];
+        }
+        return [...prev, ...fl];
+      }),
+    );
   }, [location.search]);
+
+  console.log(feedList);
 
   return (
     <SMainPageWrapper>
       <Header />
-      {Array.from(Array(10)).map((_, i) => (
-        <FeedItem key="feed" type="default" feed={mockFeed} />
-      ))}
+      {feedList &&
+        feedList.map(feed => (
+          <FeedItem key={`feed_${feed.id}`} type="default" feed={feed} />
+        ))}
       <Footer />
     </SMainPageWrapper>
   );

@@ -36,8 +36,6 @@ function Header() {
     });
   }
 
-  console.log(categoryList);
-
   return (
     <SHeader className={classNames({ hide: !topVisible })}>
       <div className="top">

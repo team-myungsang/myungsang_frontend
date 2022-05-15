@@ -1,7 +1,32 @@
+import { Category } from '@models/category';
+import { Feed } from '@models/feed';
 import axios from 'axios';
 
 interface UploadFeedResponse {
   id: number;
+}
+
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const res = await axios.get<Category[]>('/categories');
+    return res.data;
+  } catch (error) {
+    throw Error('getCategories Error');
+  }
+}
+
+export async function getMainVideos(categoryId?: string): Promise<Feed[]> {
+  try {
+    const usp = new URLSearchParams();
+    if (categoryId) {
+      usp.set('category_id', categoryId);
+    }
+    const res = await axios.get<Feed[]>(`/main/videos?${usp.toString()}`);
+
+    return res.data;
+  } catch (error) {
+    throw Error('getMainVideos Error');
+  }
 }
 
 export async function uploadFeed({
