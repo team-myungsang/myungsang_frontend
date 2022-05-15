@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUpSubmit } from '@apis/auth';
-import { ReactComponent as Reset } from '@assets/reset.svg';
+import { ReactComponent as CloseCircleFiiled } from '@assets/close_circle_filled.svg';
 import { ReactComponent as Check } from '@assets/check.svg';
 import { ReactComponent as Success } from '@assets/success.svg';
 import { SSignUpForm, SSignUpPasswordCheck } from './SignUpForm.style';
@@ -109,7 +109,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
               value={email}
               className={isEmail ? 'active' : ''}
             />
-            <Reset
+            <CloseCircleFiiled
               className="resetBtn"
               onClick={() => {
                 setForm({
@@ -143,7 +143,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
               value={password}
               className={english && number ? 'active' : ''}
             />
-            <Reset
+            <CloseCircleFiiled
               className="resetBtn"
               onClick={() => {
                 setForm({
@@ -172,7 +172,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
               value={confirmPassword}
               className={isConfirmPassword ? 'active' : ''}
             />
-            <Reset
+            <CloseCircleFiiled
               className="resetBtn"
               onClick={() => {
                 setForm({
@@ -214,7 +214,7 @@ function SignUpForm({ step, setStep }: SignUpFormProps) {
               value={nickname}
               className={isNickname ? 'active' : ''}
             />
-            <Reset
+            <CloseCircleFiiled
               className="resetBtn"
               onClick={() => {
                 setForm({
