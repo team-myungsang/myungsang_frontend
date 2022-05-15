@@ -1,11 +1,12 @@
-import { uploadFeed, uploadFiles } from '@apis/video';
+import { getCategories, uploadFeed, uploadFiles } from '@apis/video';
 import { ReactComponent as Back } from '@assets/back.svg';
 import { ReactComponent as ImgUpload } from '@assets/img_upload.svg';
 import { ReactComponent as FileUpload } from '@assets/file_upload.svg';
 import classNames from 'classnames';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Category } from '@models/category';
 import { SUploadPage } from './UploadPage.style';
 
 interface UploadPageProps {
@@ -25,6 +26,10 @@ function UploadPage({ type }: UploadPageProps) {
     title: string;
     content: string;
   }>({ mode: 'all' });
+  const [categoryList, setCategoryList] = useState<Category[]>();
+  const [selectedCategories, setSelectedCategories] = useState<
+    Record<string, boolean>
+  >({});
 
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [videoFile, setVideoFile] = useState<File>();
@@ -35,6 +40,15 @@ function UploadPage({ type }: UploadPageProps) {
   const [thumbUrl, setThumbUrl] = useState<any>();
 
   const uploadType = searchParams.get('ut');
+
+  useEffect(() => {
+    getCategories().then(cl => setCategoryList(cl));
+
+    return () => {
+      setCategoryList(undefined);
+      setSelectedCategories({});
+    };
+  }, []);
 
   function onClickVideoInput() {
     videoInputRef?.current?.click();
@@ -68,6 +82,12 @@ function UploadPage({ type }: UploadPageProps) {
     }
   }
 
+  function onClickCategoryItem(key: number) {
+    setSelectedCategories(prev => ({ ...prev, [key]: !prev[key.toString()] }));
+  }
+
+  console.log(selectedCategories);
+
   const onSubmit = handleSubmit(async data => {
     try {
       if (!thumbFile || !videoFile) {
@@ -81,9 +101,14 @@ function UploadPage({ type }: UploadPageProps) {
       formData.append('thumbnail_file', thumbFile);
       formData.append('video_file', videoFile);
 
+      const categoryKeyList = Object.entries(selectedCategories)
+        .filter(([_, isSelected]) => isSelected)
+        .map(([key, _]) => ({ id: Number(key) }));
+
       const feedId = await uploadFeed({
         title: data.title,
         content: data.content,
+        categories: categoryKeyList,
       });
 
       await uploadFiles({
@@ -91,7 +116,8 @@ function UploadPage({ type }: UploadPageProps) {
         formData,
       });
 
-      console.log('완료');
+      alert('영상 업로드 완료!');
+      navigate(-1);
     } catch (error) {
       alert(data);
     }
@@ -177,6 +203,23 @@ function UploadPage({ type }: UploadPageProps) {
         >
           <ImgUpload />
           {thumbUrl && <img src={thumbUrl} alt="" />}
+        </div>
+
+        <label htmlFor="categories">영상 카테고리 선택</label>
+        <div className="categoriesWrapper">
+          {categoryList?.map(c => (
+            <span
+              key={`categoryItem_${c.id}`}
+              className={classNames('categoryItem', {
+                selected: selectedCategories[c.id.toString()],
+              })}
+              onClick={() => onClickCategoryItem(c.id)}
+              role="button"
+              tabIndex={0}
+            >
+              {c.title}
+            </span>
+          ))}
         </div>
 
         <div>

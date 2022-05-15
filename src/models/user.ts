@@ -1,10 +1,5 @@
-interface File {
-  id: number;
-  name: string;
-  path: string;
-  extension: string;
-  fullPath: string;
-}
+import { File } from './file';
+
 export interface User {
   id: number;
   email: string;

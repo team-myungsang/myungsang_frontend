@@ -1,5 +1,7 @@
 import { Category } from '@models/category';
-import { Feed } from '@models/feed';
+import { Feed, ResponseFeed, serializeFeed } from '@models/feed';
+import { File } from '@models/file';
+import { User } from '@models/user';
 import axios from 'axios';
 
 interface UploadFeedResponse {
@@ -21,9 +23,13 @@ export async function getMainVideos(categoryId?: string): Promise<Feed[]> {
     if (categoryId) {
       usp.set('category_id', categoryId);
     }
-    const res = await axios.get<Feed[]>(`/main/videos?${usp.toString()}`);
+    const res = await axios.get<ResponseFeed[]>(
+      `/main/videos?${usp.toString()}`,
+    );
 
-    return res.data;
+    const feedList = res.data.map(f => serializeFeed(f));
+
+    return feedList;
   } catch (error) {
     throw Error('getMainVideos Error');
   }
@@ -31,8 +37,10 @@ export async function getMainVideos(categoryId?: string): Promise<Feed[]> {
 
 export async function getMyVideos(): Promise<Feed[]> {
   try {
-    const res = await axios.get<Feed[]>('/videos/me');
-    return res.data;
+    const res = await axios.get<ResponseFeed[]>('/videos/me');
+
+    const feedList = res.data.map(f => serializeFeed(f));
+    return feedList;
   } catch (error) {
     throw Error('getMainVideos Error');
   }
@@ -44,6 +52,7 @@ export async function uploadFeed({
 }: {
   title: string;
   content: string;
+  categories?: { id: number }[];
 }): Promise<number> {
   try {
     const res = await axios.post<UploadFeedResponse>('/videos', {
