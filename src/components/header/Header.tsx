@@ -3,18 +3,12 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PATH } from '@constants/path';
+import { Category } from '@models/category';
+import { getCategories } from '@apis/video';
 import { SHeader } from './Header.style';
 
-const categoryList = [
-  { key: 'all', value: '전체' },
-  { key: 'man', value: '맨' },
-  { key: 'woman', value: '우먼' },
-  { key: 'haul', value: '하울' },
-  { key: 'styling', value: '스타일링' },
-  { key: 'resell', value: '리셀' },
-];
-
 function Header() {
+  const [categoryList, setCategoryList] = useState<Category[]>();
   const [topVisible, setTopVisible] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -26,10 +20,14 @@ function Header() {
         setTopVisible(true);
       }
     });
+
+    getCategories()
+      .then(v => setCategoryList(v))
+      .catch(e => console.log(e));
   }, []);
 
-  function onClickCategory(category: string) {
-    if (category === 'all') {
+  function onClickCategory(category?: string) {
+    if (!category) {
       setSearchParams('');
       return;
     }
@@ -38,6 +36,8 @@ function Header() {
     });
   }
 
+  console.log(categoryList);
+
   return (
     <SHeader className={classNames({ hide: !topVisible })}>
       <div className="top">
@@ -45,24 +45,33 @@ function Header() {
           <img src={logoSrc} alt="logo" className="logo" />
         </Link>
       </div>
-      <div className="category">
-        {categoryList.map(c => (
+      {categoryList && (
+        <div className="category">
           <div
-            key={c.key}
             className={classNames('categoryItem', {
-              selected:
-                c.key === 'all'
-                  ? !searchParams.get('c')
-                  : searchParams.get('c') === c.key,
+              selected: !searchParams.get('c'),
             })}
-            onClick={() => onClickCategory(c.key)}
+            onClick={() => onClickCategory()}
             role="button"
             tabIndex={0}
           >
-            {c.value}
+            전체
           </div>
-        ))}
-      </div>
+          {categoryList.map(c => (
+            <div
+              key={`category_${c.id}`}
+              className={classNames('categoryItem', {
+                selected: searchParams.get('c') === c.id.toString(),
+              })}
+              onClick={() => onClickCategory(c.id.toString())}
+              role="button"
+              tabIndex={0}
+            >
+              {c.title}
+            </div>
+          ))}
+        </div>
+      )}
     </SHeader>
   );
 }
