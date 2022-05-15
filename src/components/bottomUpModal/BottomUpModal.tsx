@@ -20,6 +20,10 @@ function BottomUpModal({ content, visible }: BottomUpModalProps) {
         setClose(true);
       }, 400);
     }
+
+    return () => {
+      setBodyScroll(true);
+    };
   }, [visible]);
 
   if (!visible && close) return null;
