@@ -30,7 +30,9 @@ function MainPage() {
         ? feedList.map(feed => (
             <FeedItem key={`feed_${feed.id}`} type="default" feed={feed} />
           ))
-        : Array.from(Array(10)).map(_ => <SkeletonFeedItem />)}
+        : Array.from(Array(10)).map((_, idx) => (
+            <SkeletonFeedItem key={`skeleton_${idx}`} />
+          ))}
       <Footer />
     </SMainPageWrapper>
   );

@@ -1,12 +1,18 @@
-import { getCategories, uploadFeed, uploadFiles } from '@apis/video';
+import { getCategories, getVideo, uploadFeed, uploadFiles } from '@apis/video';
 import { ReactComponent as Back } from '@assets/back.svg';
 import { ReactComponent as ImgUpload } from '@assets/img_upload.svg';
 import { ReactComponent as FileUpload } from '@assets/file_upload.svg';
 import classNames from 'classnames';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { Category } from '@models/category';
+import { Feed } from '@models/feed';
 import { SUploadPage } from './UploadPage.style';
 
 interface UploadPageProps {
@@ -15,11 +21,13 @@ interface UploadPageProps {
 
 function UploadPage({ type }: UploadPageProps) {
   const navigate = useNavigate();
-  const params = useParams<{ movieId: string }>();
+  const location = useLocation();
+  const params = useParams<{ feedId: string }>();
   const [searchParams] = useSearchParams();
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { isDirty, isValid },
   } = useForm<{
     link: string;
@@ -49,6 +57,22 @@ function UploadPage({ type }: UploadPageProps) {
       setSelectedCategories({});
     };
   }, []);
+
+  /** 수정 시 다이렉트로 들어왔는지 체크 및 데이터 불러오기 */
+  useEffect(() => {
+    const state = location.state as any;
+    if (state?.selectedFeed) {
+      setValue('title', state.selectedFeed.title);
+      setValue('content', state.selectedFeed.content);
+    } else {
+      getVideo(Number(params.feedId)).then(f => {
+        console.log(f);
+
+        setValue('title', f.title);
+        setValue('content', f.content);
+      });
+    }
+  }, [location.state]);
 
   function onClickVideoInput() {
     videoInputRef?.current?.click();
@@ -85,8 +109,6 @@ function UploadPage({ type }: UploadPageProps) {
   function onClickCategoryItem(key: number) {
     setSelectedCategories(prev => ({ ...prev, [key]: !prev[key.toString()] }));
   }
-
-  console.log(selectedCategories);
 
   const onSubmit = handleSubmit(async data => {
     try {
@@ -223,12 +245,21 @@ function UploadPage({ type }: UploadPageProps) {
         </div>
 
         <div>
-          <button
-            type="submit"
-            disabled={!isDirty || !isValid || !thumbFile || !videoFile}
-          >
-            영상 업로드하기
-          </button>
+          {type === 'new' ? (
+            <button
+              type="submit"
+              disabled={!isDirty || !isValid || !thumbFile || !videoFile}
+            >
+              영상 업로드하기
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={!isDirty || !isValid || !thumbFile || !videoFile}
+            >
+              수정하기
+            </button>
+          )}
         </div>
       </form>
     </SUploadPage>

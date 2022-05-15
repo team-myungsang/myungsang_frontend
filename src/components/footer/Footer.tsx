@@ -77,12 +77,13 @@ function Footer({ hiddenUpButton }: FooterProps) {
     <>
       {!hiddenUpButton && <ScrollTopButton />}
       <SFooter>
-        {footerItemList.map(fi => {
+        {footerItemList.map((fi, idx) => {
           if (fi.key === 'empty') {
-            return <div className="empty" />;
+            return <div key={fi.key} className="empty" />;
           }
           return (
             <div
+              key={fi.key}
               onClick={() => onClickFooterItem(fi.key)}
               role="button"
               tabIndex={0}
