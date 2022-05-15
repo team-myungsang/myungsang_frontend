@@ -1,4 +1,5 @@
 import { roundedButtonCss } from '@styles/roundedButton';
+import { zIndexes } from '@styles/zIndexes';
 import styled from 'styled-components';
 
 export const SFooter = styled.footer`
@@ -6,6 +7,7 @@ export const SFooter = styled.footer`
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: ${zIndexes.Footer};
 
   padding: 0 30px;
   display: flex;
@@ -48,7 +50,7 @@ export const SFooter = styled.footer`
   }
 `;
 
-export const SAddVideoButton = styled.div`
+export const SUploadFeedButton = styled.div`
   position: absolute;
   top: -8px;
   left: 50%;
@@ -92,5 +94,40 @@ export const SLoginModalContent = styled.div`
     border: 1px solid #c8c8c8;
     background-color: #fff;
     color: ${p => p.theme.color.black};
+  }
+`;
+
+export const SAccountModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-family: Pretendard;
+  font-size: 15px;
+  font-weight: 600;
+
+  > .title {
+    font-family: Pretendard;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 24px;
+  }
+  > input {
+    font-size: 14px;
+    outline: none;
+    border: none;
+    padding: 15px 122px;
+    border-radius: 100px;
+    &:nth-child(2) {
+      color: white;
+      background: #9e9e9e;
+      margin: 10px 0;
+    }
+    &:last-child {
+      color: black;
+      background: transparent;
+      border: 1px solid #a8a8a8;
+      margin-bottom: 15px;
+    }
   }
 `;
