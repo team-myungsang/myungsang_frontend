@@ -12,10 +12,20 @@ export const SLikeListPage = styled.div`
       line-height: 16px;
     }
     .desc {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-top: 10px;
       font-weight: 500;
       font-size: 13px;
       line-height: 10px;
+
+      .videoCount {
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 14px;
+        color: #5b5b5b;
+      }
     }
   }
 `;
