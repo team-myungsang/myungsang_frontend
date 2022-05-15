@@ -1,3 +1,4 @@
+import { zIndexes } from '@styles/zIndexes';
 import styled from 'styled-components';
 
 export const SHeader = styled.header`
@@ -5,6 +6,7 @@ export const SHeader = styled.header`
   top: 0;
   left: 0;
   right: 0;
+  z-index: ${zIndexes.Header};
   transition: 0.3s;
   transform: translateY(0px);
   &.hide {

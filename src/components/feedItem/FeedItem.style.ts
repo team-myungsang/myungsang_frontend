@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const SFeed = styled.div`
+  position: relative;
   width: 100%;
-  height: 380px;
-  padding: 20px 0;
+  padding: 20px 0 15px;
   margin-bottom: 10px;
   color: ${p => p.theme.color.black};
   background-color: #fff;
@@ -49,7 +49,7 @@ export const SFeed = styled.div`
   }
 
   .feedFooter {
-    padding: 10px 15px 20px;
+    padding: 10px 15px 0px;
     .feedTitle {
       font-weight: 500;
       font-size: 13px;
@@ -83,6 +83,29 @@ export const SFeed = styled.div`
         path {
           fill: ${p => p.theme.color.gray01};
         }
+      }
+    }
+  }
+
+  .editButton {
+    position: absolute;
+    top: 35px;
+    right: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(13, 13, 13, 0.7);
+    border: 1px solid #3a3a3a;
+    border-radius: 50%;
+    backdrop-filter: blur(5px);
+
+    svg {
+      width: 22px;
+      height: 22px;
+      path {
+        fill: #fff;
       }
     }
   }

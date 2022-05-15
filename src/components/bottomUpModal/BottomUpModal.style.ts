@@ -1,3 +1,4 @@
+import { zIndexes } from '@styles/zIndexes';
 import styled, { css, keyframes } from 'styled-components';
 
 const openAnimation = keyframes`
@@ -20,6 +21,24 @@ const closeAnimation = keyframes`
     opacity: 0;
     transform: translateY(400px);
   }
+  `;
+
+const openOverlayAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const closeOverlayAnimation = keyframes`
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 `;
 
 export const SBottomUpModal = styled.div<{ visible: boolean }>`
@@ -28,6 +47,7 @@ export const SBottomUpModal = styled.div<{ visible: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: ${zIndexes.Modal};
 
   ${p =>
     p.visible
@@ -51,11 +71,20 @@ export const SBottomUpModal = styled.div<{ visible: boolean }>`
   }
 `;
 
-export const Overlay = styled.div`
+export const SOverlay = styled.div<{ visible: boolean }>`
+  ${p =>
+    p.visible
+      ? css`
+          animation: ${openOverlayAnimation} 0.2s forwards ease-in-out;
+        `
+      : css`
+          animation: ${closeOverlayAnimation} 0.2s forwards ease-in-out;
+        `}
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: ${zIndexes.Modal};
   background-color: rgba(0, 0, 0, 0.75);
 `;

@@ -20,7 +20,7 @@ function MainPage() {
     <SMainPageWrapper>
       <Header />
       {Array.from(Array(10)).map((_, i) => (
-        <FeedItem key="feed" feed={mockFeed} />
+        <FeedItem key="feed" type="default" feed={mockFeed} />
       ))}
       <Footer />
     </SMainPageWrapper>

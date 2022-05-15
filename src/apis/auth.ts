@@ -21,8 +21,18 @@ interface SignUpResponse {
   password: string;
 }
 
+interface ProfileRequest {
+  data: any;
+}
+
+interface ProfileResponse {
+  nickname: string;
+  email: string;
+}
+
 interface LikeCntResponse {
-  likeCnt: number;
+  videoId: number;
+  userId: number;
 }
 
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
@@ -106,6 +116,29 @@ export async function signUpSubmit({
   return res.data.msg;
 }
 
+export async function getProfile() {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  // /users/me 로 교체해야함.
+  const res = await axios.get<ProfileRequest, any>('/users/1', {
+    headers,
+  });
+  return res.data;
+}
+
+export async function submitProfile({ email, nickname }: ProfileResponse) {
+  const data = {
+    email,
+    name: nickname,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/', data, { headers });
+  return res.data.msg;
+}
+
 export async function getMovie() {
   const headers = {
     'Content-Type': 'application/json',
@@ -116,13 +149,25 @@ export async function getMovie() {
   return res.data;
 }
 
-export async function submitLikeCnt({ likeCnt }: LikeCntResponse) {
+export async function IncreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
   const data = {
-    likeCnt,
+    videoId,
+    userId,
   };
   const headers = {
     'Content-Type': 'application/json',
   };
   const res = await axios.post('/increaseLikeCnt', data, { headers });
+  console.log(res);
+}
+export async function DecreaseLikeCnt({ videoId, userId }: LikeCntResponse) {
+  const data = {
+    videoId,
+    userId,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/DecreaseLikeCnt', data, { headers });
   console.log(res);
 }
