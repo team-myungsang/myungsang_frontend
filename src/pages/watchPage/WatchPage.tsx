@@ -7,7 +7,8 @@ import { ReactComponent as Like } from '@assets/like.svg';
 import { ReactComponent as LikeAction } from '@assets/like_action.svg';
 import { ReactComponent as Save } from '@assets/save.svg';
 import { ReactComponent as ArrowDown } from '@assets/arrow_down.svg';
-import { getMovie, submitLikeCnt } from '@apis/auth';
+import { DecreaseLikeCnt, getMovie, IncreaseLikeCnt } from '@apis/auth';
+import Video from '@components/video/Video';
 import {
   SDescription,
   SFeedback,
@@ -16,7 +17,6 @@ import {
   SMemo,
   STitle,
   SUser,
-  SVideo,
   SVideoSample,
   SWatchNDate,
 } from './WatchPage.style';
@@ -24,16 +24,18 @@ import {
 function WatchPage() {
   const [isHeart, setIsHeart] = useState(false);
   const [memo, setMemo] = useState(false);
-  const [video, setVideo] = useState(null);
   const [likeCnt, setLikeCnt] = useState(0);
   const [data, setData] = useState({
     content: '',
     createdAt: '',
     title: '',
     view: 0,
+    videoUrl: '',
+    videoId: 0,
+    userId: 0,
   });
   const PageMove = useNavigate();
-  const { content, createdAt, title, view } = data;
+  const { content, createdAt, title, view, videoUrl, videoId, userId } = data;
 
   const handleHeartClick = () => {
     setIsHeart(prev => !prev);
@@ -53,17 +55,25 @@ function WatchPage() {
       setData({
         ...data,
         content: result.content,
-        createdAt: result.createdAt,
+        createdAt: result.created_at,
         title: result.title,
         view: result.view,
+        videoUrl: result.video_file.fullPath,
+        videoId: result.id,
+        userId: result.user.id,
       });
+      setIsHeart(result.liked);
       setLikeCnt(result.likeCnt);
     };
     get();
   }, []);
 
   useEffect(() => {
-    submitLikeCnt({ likeCnt });
+    if (!isHeart) {
+      IncreaseLikeCnt({ videoId, userId });
+    } else {
+      DecreaseLikeCnt({ videoId, userId });
+    }
   }, [likeCnt]);
 
   return (
@@ -79,10 +89,8 @@ function WatchPage() {
           <GGTOWN />
         </button>
       </SHeader>
-      {video ? (
-        <SVideo>
-          <source src={video} />
-        </SVideo>
+      {videoUrl ? (
+        <Video videoUrl={videoUrl} />
       ) : (
         <SVideoSample>로딩중...</SVideoSample>
       )}

@@ -20,10 +20,6 @@ export const SHeader = styled.div`
   }
 `;
 
-export const SVideo = styled.video`
-  height: 180px;
-  background: gray;
-`;
 export const SVideoSample = styled.div`
   height: 180px;
   background: gray;
@@ -34,6 +30,7 @@ export const SVideoSample = styled.div`
 
 export const SMain = styled.div`
   padding-bottom: 20px;
+  font-size: 11px;
 `;
 
 export const STitle = styled.div`
@@ -69,6 +66,9 @@ export const SFeedback = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 600;
+  color: #5b5b5b;
+
   > hr {
     transform: rotate(90deg);
     width: 30px;
@@ -93,6 +93,7 @@ export const SFeedback = styled.div`
 `;
 
 export const SUser = styled.div`
+  font-size: 14px;
   display: flex;
   align-items: center;
   border-width: 1px 0;
@@ -109,10 +110,14 @@ export const SUser = styled.div`
 `;
 
 export const SDescription = styled.div`
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 600;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   > .left {
     position: absolute;
     left: 20px;
@@ -124,6 +129,9 @@ export const SDescription = styled.div`
 `;
 
 export const SMemo = styled.div`
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 600;
   padding: 10px 20px;
   word-break: break-all;
 `;
