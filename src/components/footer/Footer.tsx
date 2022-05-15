@@ -12,6 +12,10 @@ import ScrollTopButton from '../scrollTopButton/ScrollTopButton';
 import { SFooter, SLoginModalContent } from './Footer.style';
 import AddVideoButton from './AddVideoButton';
 
+interface FooterProps {
+  hiddenUpButton?: boolean;
+}
+
 const footerItemList = [
   {
     key: PATH.MAIN,
@@ -36,7 +40,7 @@ const footerItemList = [
   },
 ];
 
-function Footer() {
+function Footer({ hiddenUpButton }: FooterProps) {
   const [loginModalVisible, setLoginModalVisible] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,7 +60,7 @@ function Footer() {
 
   return (
     <>
-      <ScrollTopButton />
+      {!hiddenUpButton && <ScrollTopButton />}
       <SFooter>
         {footerItemList.map(fi => {
           if (fi.key === 'empty') {

@@ -195,7 +195,7 @@ function ProfilePage() {
         form={form}
         setForm={setForm}
       />
-      <Footer />
+      <Footer hiddenUpButton />
       <BottomUpModal
         content={
           <SAccountModalContent>
