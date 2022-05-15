@@ -21,6 +21,15 @@ interface SignUpResponse {
   password: string;
 }
 
+interface ProfileRequest {
+  data: any;
+}
+
+interface ProfileResponse {
+  nickname: string;
+  email: string;
+}
+
 // function loginSuccess({ accessToken, refreshToken, refreshExpiresIn }): void {
 //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
@@ -99,5 +108,28 @@ export async function signUpSubmit({
     'Content-Type': 'application/json',
   };
   const res = await axios.post('/register', data, { headers });
+  return res.data.msg;
+}
+
+export async function getProfile() {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  // /users/me 로 교체해야함.
+  const res = await axios.get<ProfileRequest, any>('/users/1', {
+    headers,
+  });
+  return res.data;
+}
+
+export async function submitProfile({ email, nickname }: ProfileResponse) {
+  const data = {
+    email,
+    name: nickname,
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.post('/', data, { headers });
   return res.data.msg;
 }

@@ -3,7 +3,7 @@ import LikeListPage from '@pages/LikeListPage';
 import LoginPage from '@pages/loginPage/LoginPage';
 import MainPage from '@pages/mainPage/MainPage';
 import MyVideoPage from '@pages/myVideoPage/MyVideoPage';
-import ProfilePage from '@pages/ProfilePage';
+import ProfilePage from '@pages/profilePage/ProfilePage';
 import SignUpPage from '@pages/signUpPage/SignUpPage';
 import UploadPage from '@pages/uploadPage/UploadPage';
 import WatchPage from '@pages/WatchPage';
