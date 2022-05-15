@@ -1,13 +1,13 @@
-import SignUpForm from '@components/signUpForm/SignUpForm';
 import { useState, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SignUpForm from '@components/signUpForm/SignUpForm';
+import { ReactComponent as ArrowLeft } from '@assets/arrow_left.svg';
 import {
   SSignUpModal,
   SSignUpModalOuter,
   SSignUpModalYesOrNo,
   SHeader,
 } from './SignUp.style';
-import { ReactComponent as ArrowLeft } from '../../assets/ArrowLeft.svg';
 
 // modal type
 interface ModalProps {
