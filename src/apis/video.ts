@@ -29,6 +29,15 @@ export async function getMainVideos(categoryId?: string): Promise<Feed[]> {
   }
 }
 
+export async function getMyVideos(): Promise<Feed[]> {
+  try {
+    const res = await axios.get<Feed[]>('/videos/me');
+    return res.data;
+  } catch (error) {
+    throw Error('getMainVideos Error');
+  }
+}
+
 export async function uploadFeed({
   title,
   content,
