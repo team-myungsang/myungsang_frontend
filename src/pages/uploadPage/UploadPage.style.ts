@@ -131,4 +131,29 @@ export const SUploadPage = styled.div`
     line-height: 31px;
     color: #fff;
   }
+
+  .categoriesWrapper {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .categoryItem {
+      padding: 5px 12px;
+      border-radius: 10px;
+      border: 1px solid #eaeaea;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 14px;
+      word-break: keep-all;
+
+      &.selected {
+        border: none;
+        border: 1px solid #ff613f;
+        background-color: #ff613f;
+        color: #fff;
+      }
+    }
+  }
 `;

@@ -1,10 +1,18 @@
-import onBoardingImg from '@assets/tmp_ob.png';
+import onBoardingImg1 from '@assets/onboarding_1.png';
+import onBoardingImg2 from '@assets/onboarding_2.png';
 import { SOnboarding } from './Onboarding.style';
 
-function Onboarding() {
+interface OnboardingStepProps {
+  step: 1 | 2;
+}
+
+function Onboarding({ step }: OnboardingStepProps) {
   return (
-    <SOnboarding>
-      <img src={onBoardingImg} alt="onBoardingImg" />
+    <SOnboarding step={step}>
+      <img
+        src={step === 1 ? onBoardingImg1 : onBoardingImg2}
+        alt="onBoardingImg"
+      />
     </SOnboarding>
   );
 }

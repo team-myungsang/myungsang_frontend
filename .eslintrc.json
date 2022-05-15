@@ -17,6 +17,7 @@
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react/jsx-filename-extension": 0,
     "react/react-in-jsx-scope": 0,
+    "react/no-array-index-key": 0,
     "react/jsx-no-bind": 0,
     "react/require-default-props": 0,
     "import/extensions": 0,
@@ -28,6 +29,6 @@
     "jsx-a11y/media-has-caption": 0,
     "no-unused-vars": 0,
     "no-alert": "off",
-    "react/require-default-props": "off"
+    "no-nested-ternary": 0
   }
 }
